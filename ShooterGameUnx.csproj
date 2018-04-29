@@ -47,7 +47,20 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Components\ControllerComponent.cs" />
+    <Compile Include="src\Components\DrawableComponent.cs" />
+    <Compile Include="src\Components\MovementComponent.cs" />
+    <Compile Include="src\Entity.cs" />
+    <Compile Include="src\Components\IComponent.cs" />
+    <Compile Include="src\IUpdate.cs" />
+    <Compile Include="src\Map.cs" />
+    <Compile Include="src\Chunk.cs" />
+    <Compile Include="src\Components\PlayerControllerComponent.cs" />
+    <Compile Include="src\TickRateController.cs" />
+    <Compile Include="src\Tile.cs" />
     <Compile Include="src\GameMain.cs" />
+    <Compile Include="src\Components\PositionComponent.cs" />
+    <Compile Include="src\UpdateManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SwinGame">
