@@ -17,10 +17,21 @@ namespace ShooterGame
             {
                 if (_parent != value)
                 {
+                    // Record the old value of ShouldUpdate
+                    bool shouldUpdatePrevious = ShouldUpdate;
+
+                    // Update the old parent, if any
                     if (_parent != null) _parent.Controller = null;
+
+                    // Update value
                     _parent = value;
+
+                    // Update the new parent, if any
                     if (_parent != null) _parent.Controller = this;
-                    UpdateManager.Changed(this);
+
+                    // Check if class needs to start being updated
+                    if (!shouldUpdatePrevious && ShouldUpdate)
+                        UpdateController.Add(this);
                 }
             }
         }
@@ -36,13 +47,14 @@ namespace ShooterGame
                 if (_controllerActive != value)
                 {
                     _controllerActive = value;
-                    UpdateManager.Changed(this);
+                    if (_controllerActive)
+                        UpdateController.Add(this);
                 }
             }
         }
 
         /// <summary>
-        /// Check if this class should be updated.
+        /// Check if this class should continue to be updated.
         /// </summary>
         public bool ShouldUpdate { get { return _controllerActive && (Parent != null); } }
 

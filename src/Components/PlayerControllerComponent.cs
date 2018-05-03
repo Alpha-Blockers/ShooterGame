@@ -13,7 +13,7 @@ namespace ShooterGame
         {
             ControllerActive = true;
         }
-        
+
         /// <summary>
         /// Check for input from the player
         /// </summary>

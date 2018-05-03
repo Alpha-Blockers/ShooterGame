@@ -34,7 +34,7 @@ namespace ShooterGame
             {
                 bool temp = ShouldUpdate;
                 _speedX = value;
-                if (temp != ShouldUpdate) UpdateManager.Changed(this);
+                if (temp != ShouldUpdate) UpdateController.Changed(this);
             }
         }
 
@@ -48,7 +48,7 @@ namespace ShooterGame
             {
                 bool temp = ShouldUpdate;
                 _speedY = value;
-                if (temp != ShouldUpdate) UpdateManager.Changed(this);
+                if (temp != ShouldUpdate) UpdateController.Changed(this);
             }
         }
 

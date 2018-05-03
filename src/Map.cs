@@ -68,8 +68,8 @@ namespace ShooterGame
                 Max(0, Min(ChunksX - 1, (int)(x / Chunk.Width))),
                 Max(0, Min(ChunksY - 1, (int)(y / Chunk.Height)))];
         }
-        
-        
+
+
         /// <summary>
         /// Draw map to screen.
         /// </summary>
@@ -83,7 +83,7 @@ namespace ShooterGame
                 {
                     _chunk[x, y].DrawBackground();
                 }
-                
+
             }
 
             // Draw map foreground

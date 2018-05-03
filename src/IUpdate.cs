@@ -4,7 +4,7 @@ namespace ShooterGame
     interface IUpdate
     {
         /// <summary>
-        /// Check if this class should be updated.
+        /// Check if this class should continue to be updated.
         /// </summary>
         bool ShouldUpdate { get; }
 

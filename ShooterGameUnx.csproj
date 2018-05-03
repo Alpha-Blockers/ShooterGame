@@ -56,11 +56,12 @@
     <Compile Include="src\Map.cs" />
     <Compile Include="src\Chunk.cs" />
     <Compile Include="src\Components\PlayerControllerComponent.cs" />
+    <Compile Include="src\Player.cs" />
     <Compile Include="src\TickRateController.cs" />
     <Compile Include="src\Tile.cs" />
     <Compile Include="src\GameMain.cs" />
     <Compile Include="src\Components\PositionComponent.cs" />
-    <Compile Include="src\UpdateManager.cs" />
+    <Compile Include="src\UpdateController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SwinGame">

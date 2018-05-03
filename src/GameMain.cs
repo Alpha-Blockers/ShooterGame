@@ -1,7 +1,7 @@
 using System;
 using SwinGameSDK;
-using static SwinGameSDK.SwinGame; // requires mcs version 4+, 
-// using SwinGameSDK.SwinGame; // requires mcs version 4+, 
+using static SwinGameSDK.SwinGame; // requires mcs version 4+,
+// using SwinGameSDK.SwinGame; // requires mcs version 4+,
 
 namespace ShooterGame
 {
@@ -25,17 +25,17 @@ namespace ShooterGame
                 Movement = new MovementComponent(),
                 Controller = new PlayerControllerComponent()
             };
-            
+
             // Run the game loop
             ticker.Reset();
             while ((false == WindowCloseRequested()) && !KeyTyped(KeyCode.EscapeKey))
             {
                 // Update game
-                UpdateManager.Flush();
+                UpdateController.Flush();
 
                 // Fetch the next batch of UI interaction
                 ProcessEvents();
-                
+
                 // Clear the screen
                 ClearScreen(Color.White);
 
@@ -50,7 +50,7 @@ namespace ShooterGame
 
                 // Draw world
                 map.Draw();
-                
+
                 // Reset camera before drawing interface
                 point.X = 0;
                 point.Y = 0;

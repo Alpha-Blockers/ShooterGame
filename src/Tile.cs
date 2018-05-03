@@ -7,7 +7,6 @@ namespace ShooterGame
     /// </summary>
     class Tile
     {
-
         private const int TILE_SIZE = 20; // Used within property Width and Height
 
         /// <summary>
