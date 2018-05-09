@@ -47,6 +47,16 @@
     <Compile Include="src\Map.cs" />
     <Compile Include="src\Chunk.cs" />
     <Compile Include="src\Components\PlayerControllerComponent.cs" />
+    <Compile Include="src\Network\ByePacket.cs" />
+    <Compile Include="src\Network\ChatPacket.cs" />
+    <Compile Include="src\Network\IPacket.cs" />
+    <Compile Include="src\Network\MessageLog.cs" />
+    <Compile Include="src\Network\NetworkClient.cs" />
+    <Compile Include="src\Network\NetworkController.cs" />
+    <Compile Include="src\Network\NetworkServer.cs" />
+    <Compile Include="src\Network\PacketTransferBuffer.cs" />
+    <Compile Include="src\Network\PacketHeader.cs" />
+    <Compile Include="src\Network\PlayerNamePacket.cs" />
     <Compile Include="src\Player.cs" />
     <Compile Include="src\TickRateController.cs" />
     <Compile Include="src\Tile.cs" />

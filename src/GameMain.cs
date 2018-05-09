@@ -16,6 +16,8 @@ namespace ShooterGame
             Map map = new Map(6, 6);
             Point2D point = new Point2D();
             TickRateController ticker = new TickRateController(60);
+            //NetworkServer server = new NetworkServer();
+            //NetworkClient client = new NetworkClient("localhost");
 
             // Create test entity
             Entity player = new Entity
@@ -30,15 +32,29 @@ namespace ShooterGame
             ticker.Reset();
             while ((false == WindowCloseRequested()) && !KeyTyped(KeyCode.EscapeKey))
             {
-                // Update game
-                UpdateController.Flush();
-
                 // Fetch the next batch of UI interaction
                 ProcessEvents();
 
                 // Clear the screen
                 ClearScreen(Color.White);
 
+                /*
+                int y = 50;
+                foreach (ChatPacket c in MessageLog.Messages)
+                {
+                    DrawText("> " + c.ToString(), Color.Black, 30, y);
+                    y += 20;
+                }
+                */
+
+
+                // Update game
+                UpdateController.Flush();
+                
+                //server.Update();
+                //client.Update();
+
+                /*
                 // Set camera before drawing world
                 PositionComponent position = player.Position;
                 if (position != null)
@@ -55,7 +71,7 @@ namespace ShooterGame
                 point.X = 0;
                 point.Y = 0;
                 SetCameraPos(point);
-
+                */
                 // Draw interface
                 DrawFramerate(0, 0);
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SwinGameSDK;
 
 namespace ShooterGame
 {
@@ -32,6 +33,8 @@ namespace ShooterGame
                     _list.Add(u);
             }
 
+            SwinGame.DrawText("List count: " + _list.Count, Color.Black, 30, 30);
+
             // Loop through list of updateable classes and run their update method
             foreach (IUpdate u in _list)
             {
@@ -42,11 +45,11 @@ namespace ShooterGame
             }
 
             // Remove classes from the main update list as required
-            while (_toAdd.Count > 0)
+            while (_toRemove.Count > 0)
             {
-                IUpdate u = _toAdd.Dequeue();
+                IUpdate u = _toRemove.Dequeue();
                 if (!u.ShouldUpdate)
-                    _list.Add(u);
+                    _list.Remove(u);
             }
         }
     }

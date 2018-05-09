@@ -6,7 +6,7 @@ namespace ShooterGame
         private Entity _parent;
         private int _speedX;
         private int _speedY;
-
+        
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
@@ -32,9 +32,9 @@ namespace ShooterGame
             get => _speedX;
             set
             {
-                bool temp = ShouldUpdate;
+                bool shouldUpdatePrevious = ShouldUpdate;
                 _speedX = value;
-                if (temp != ShouldUpdate) UpdateController.Changed(this);
+                if (!shouldUpdatePrevious && ShouldUpdate) UpdateController.Add(this);
             }
         }
 
@@ -46,9 +46,9 @@ namespace ShooterGame
             get => _speedY;
             set
             {
-                bool temp = ShouldUpdate;
+                bool shouldUpdatePrevious = ShouldUpdate;
                 _speedY = value;
-                if (temp != ShouldUpdate) UpdateController.Changed(this);
+                if (!shouldUpdatePrevious && ShouldUpdate) UpdateController.Add(this);
             }
         }
 

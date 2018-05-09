@@ -15,6 +15,7 @@ namespace ShooterGame
         private int _index;
         private string _name;
         private Color _colour;
+        private bool _slotUsed;
 
         /// <summary>
         /// Check if this player is the local player.
@@ -38,7 +39,7 @@ namespace ShooterGame
         /// <summary>
         /// Access player name.
         /// </summary>
-        /// <remarks>This should only be changed by the NetworkController.</remarks>
+        /// <remarks>This should only be changed by a network module.</remarks>
         public string Name
         {
             get => _name;
@@ -48,13 +49,13 @@ namespace ShooterGame
         /// <summary>
         /// Access player colour.
         /// </summary>
-        /// <remarks>This should only be changed by the NetworkController.</remarks>
+        /// <remarks>This should only be changed by a network module.</remarks>
         public Color Colour
         {
             get => _colour;
             set { _colour = value;}
         }
-
+        
         /// <summary>
         /// Setup the player list.
         /// </summary>
@@ -84,12 +85,29 @@ namespace ShooterGame
         }
 
         /// <summary>
+        /// Get the number of players in the static player list.
+        /// </summary>
+        public static int Count
+        {
+            get
+            {
+                return _players.Count;
+            }
+        }
+
+        /// <summary>
         /// Set the index of the local player.
         /// </summary>
         /// <param name="i">Array index if the local player.</param>
         public static void SetLocalPlayerIndex(int i)
         {
-            _localPlayer = PlayerByIndex(i);
+            Player p = PlayerByIndex(i);
+            if ((p != _localPlayer) && (p?._slotUsed == false))
+            {
+                if (_localPlayer != null) _localPlayer._slotUsed= false;
+                _localPlayer = p;
+                if (_localPlayer != null)_localPlayer._slotUsed = true;
+            }
         }
 
         /// <summary>
@@ -103,6 +121,31 @@ namespace ShooterGame
                 return _players[i];
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Find a free player slot and return it, if one exists.
+        /// </summary>
+        /// <returns>The newly allocated player slot, or null if none were available.</returns>
+        public static Player AllocatePlayer()
+        {
+            foreach (Player p in _players)
+            {
+                if (!p._slotUsed)
+                {
+                    p._slotUsed = true;
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Release a previously allocated player slot. This is used if a player leaves the game.
+        /// </summary>
+        public void ReleasePlayer()
+        {
+            _slotUsed = false;
         }
     }
 }
