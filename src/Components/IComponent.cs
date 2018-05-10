@@ -7,7 +7,7 @@ namespace ShooterGame
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
-        Entity Parent { get; set; }
+        Entity Entity { get; set; }
 
         /// <summary>
         /// Clear all component data and attempt to unlink from any external data.

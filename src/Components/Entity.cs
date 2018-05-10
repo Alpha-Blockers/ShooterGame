@@ -8,6 +8,7 @@ namespace ShooterGame
         private MovementComponent _movement;
         private DrawableComponent _drawable;
         private ControllerComponent _controller;
+        private CollisionComponent _collision;
 
         /// <summary>
         /// Check for position.
@@ -34,6 +35,12 @@ namespace ShooterGame
         public bool IsDrawable() { return _drawable != null; }
 
         /// <summary>
+        /// Check for for collision data.
+        /// </summary>
+        /// <returns>True if entity has a collision component.</returns>
+        public bool HasCollision() { return _collision != null; }
+
+        /// <summary>
         /// Clear all entity data.
         /// </summary>
         public void Destroy()
@@ -42,6 +49,7 @@ namespace ShooterGame
             _movement?.Destroy();
             _drawable?.Destroy();
             _controller?.Destroy();
+            _collision?.Destroy();
         }
 
         /// <summary>
@@ -53,9 +61,9 @@ namespace ShooterGame
             {
                 if (_position != value)
                 {
-                    if (_position != null) _position.Parent = null;
+                    if (_position != null) _position.Entity = null;
                     _position = value;
-                    if (_position != null) _position.Parent = this;
+                    if (_position != null) _position.Entity = this;
                 }
             }
             get
@@ -73,9 +81,9 @@ namespace ShooterGame
             {
                 if (_movement != value)
                 {
-                    if (_movement != null) _movement.Parent = null;
+                    if (_movement != null) _movement.Entity = null;
                     _movement = value;
-                    if (_movement != null) _movement.Parent = this;
+                    if (_movement != null) _movement.Entity = this;
                 }
             }
             get
@@ -93,9 +101,9 @@ namespace ShooterGame
             {
                 if (_drawable != value)
                 {
-                    if (_drawable != null) _drawable.Parent = null;
+                    if (_drawable != null) _drawable.Entity = null;
                     _drawable = value;
-                    if (_drawable != null) _drawable.Parent = this;
+                    if (_drawable != null) _drawable.Entity = this;
                 }
             }
             get
@@ -113,14 +121,34 @@ namespace ShooterGame
             {
                 if (_controller != value)
                 {
-                    if (_controller != null) _controller.Parent = null;
+                    if (_controller != null) _controller.Entity = null;
                     _controller = value;
-                    if (_controller != null) _controller.Parent = this;
+                    if (_controller != null) _controller.Entity = this;
                 }
             }
             get
             {
                 return _controller;
+            }
+        }
+
+        /// <summary>
+        /// Access controller data, if it exists.
+        /// </summary>
+        public CollisionComponent Collision
+        {
+            set
+            {
+                if (_collision != value)
+                {
+                    if (_collision != null) _collision.Entity = null;
+                    _collision = value;
+                    if (_collision != null) _collision.Entity = this;
+                }
+            }
+            get
+            {
+                return _collision;
             }
         }
     }

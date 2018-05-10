@@ -4,7 +4,7 @@ namespace ShooterGame
 {
     class DrawableComponent : IComponent
     {
-        private Entity _parent;
+        private Entity _entity;
         private Color _color;
         private int _size;
 
@@ -40,16 +40,16 @@ namespace ShooterGame
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
-        public Entity Parent
+        public Entity Entity
         {
-            get => _parent;
+            get => _entity;
             set
             {
-                if (_parent != value)
+                if (_entity != value)
                 {
-                    if (_parent != null) _parent.Drawable = null;
-                    _parent = value;
-                    if (_parent != null) _parent.Drawable = this;
+                    if (_entity != null) _entity.Drawable = null;
+                    _entity = value;
+                    if (_entity != null) _entity.Drawable = this;
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace ShooterGame
         /// </summary>
         public void Draw()
         {
-            PositionComponent p = Parent?.Position;
+            PositionComponent p = Entity?.Position;
             if (p != null)
             {
                 SwinGame.FillCircle(_color, p.X, p.Y, _size);

@@ -12,7 +12,7 @@ namespace ShooterGame
         /// </summary>
         public BulletControllerComponent()
         {
-            ControllerActive = true;
+            Enabled = true;
             _life = 60;
         }
 
@@ -27,7 +27,7 @@ namespace ShooterGame
             }
             else
             {
-                Parent.Destroy();
+                Entity.Destroy();
             }
         }
     }

@@ -11,17 +11,20 @@ namespace ShooterGame
     /// </summary>
     class Chunk
     {
-        private const int TILES_PER_CHUNK = 8;
+        /// <summary>
+        /// Get the size of a chunk, measured in tiles.
+        /// </summary>
+        public const int TILES_PER_CHUNK = 8;
 
-        private Map _parent;
+        private Map _map;
         private int _xIndex, _yIndex;
         private Tile[,] _tile;
-        private List<PositionComponent> _positions;
-
+        private List<PositionComponent> _entities;
+        
         /// <summary>
         /// Get parent map.
         /// </summary>
-        public Map Parent { get => _parent; }
+        public Map Map { get => _map; }
 
         /// <summary>
         /// Get X index of this chunk (useful if used with paremt map).
@@ -108,11 +111,11 @@ namespace ShooterGame
         /// <param name="yIndex">Y-index of this chunk within the parent map's chunk array.</param>
         public Chunk(Map parent, int xIndex, int yIndex)
         {
-            _parent = parent;
+            _map = parent;
             _xIndex = xIndex;
             _yIndex = yIndex;
             _tile = new Tile[TILES_PER_CHUNK, TILES_PER_CHUNK];
-            _positions = new List<PositionComponent>();
+            _entities = new List<PositionComponent>();
             for (int x = 0; x < TILES_PER_CHUNK; x++)
             {
                 for (int y = 0; y < TILES_PER_CHUNK; y++)
@@ -127,7 +130,6 @@ namespace ShooterGame
         /// </summary>
         public void DrawBackground()
         {
-
             // Draw tiles within this chunk
             for (int x=0; x<TILES_PER_CHUNK; x++)
             {
@@ -138,7 +140,7 @@ namespace ShooterGame
             }
 
             // Draw chunk boundary (for debug)
-            SwinGame.DrawRectangle(Color.Purple, Left, Top, Width, Height);
+            SwinGame.DrawRectangle(Color.Gray, Left, Top, Width, Height);
         }
 
         /// <summary>
@@ -146,9 +148,9 @@ namespace ShooterGame
         /// </summary>
         public void DrawForeground()
         {
-            foreach (PositionComponent p in _positions)
+            foreach (PositionComponent p in _entities)
             {
-                p?.Parent?.Drawable?.Draw();
+                p?.Entity?.Drawable?.Draw();
             }
         }
 
@@ -177,6 +179,6 @@ namespace ShooterGame
         /// <summary>
         /// Access list of position components which are over this tile.
         /// </summary>
-        public List<PositionComponent> Positions { get => _positions; }
+        public List<PositionComponent> Entities { get => _entities; }
     }
 }

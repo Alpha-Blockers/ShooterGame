@@ -16,14 +16,39 @@ namespace ShooterGame
         /// <param name="chunksY">Size of map in Y direction, measured in chunks.</param>
         public Map(int chunksX, int chunksY)
         {
+            // Save map size
             _chunksX = chunksX;
             _chunksY = chunksY;
+
+            // Generate chunks
             _chunk = new Chunk[ChunksX, ChunksY];
             for (int x = 0; x < ChunksX; x++)
             {
                 for (int y = 0; y < ChunksY; y++)
                 {
                     _chunk[x, y] = new Chunk(this, x, y);
+                }
+            }
+
+            // Set edge chunks and not passable
+            for (int x = 0; x < ChunksX; x++)
+            {
+                Chunk upper = _chunk[x, 0];
+                Chunk lower = _chunk[x, chunksY - 1];
+                for (int s = 0; s < Chunk.TILES_PER_CHUNK; s++)
+                {
+                    upper.TileByIndex(s, 0).Passable = false;
+                    lower.TileByIndex(s, Chunk.TILES_PER_CHUNK - 1).Passable = false;
+                }
+            }
+            for (int y = 0; y < ChunksY; y++)
+            {
+                Chunk left = _chunk[0, y];
+                Chunk right = _chunk[chunksX - 1, y];
+                for (int t = 0; t < Chunk.TILES_PER_CHUNK; t++)
+                {
+                    left.TileByIndex(0, t).Passable = false;
+                    right.TileByIndex(Chunk.TILES_PER_CHUNK - 1, t).Passable = false;
                 }
             }
         }

@@ -4,30 +4,30 @@ namespace ShooterGame
 {
     abstract class ControllerComponent : IComponent, IUpdate
     {
-        private Entity _parent;
-        private bool _controllerActive;
+        private Entity _entity;
+        private bool _enabled;
 
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
-        public Entity Parent
+        public Entity Entity
         {
-            get => _parent;
+            get => _entity;
             set
             {
-                if (_parent != value)
+                if (_entity != value)
                 {
                     // Record the old value of ShouldUpdate
                     bool shouldUpdatePrevious = ShouldUpdate;
 
                     // Update the old parent, if any
-                    if (_parent != null) _parent.Controller = null;
+                    if (_entity != null) _entity.Controller = null;
 
                     // Update value
-                    _parent = value;
+                    _entity = value;
 
                     // Update the new parent, if any
-                    if (_parent != null) _parent.Controller = this;
+                    if (_entity != null) _entity.Controller = this;
 
                     // Check if class needs to start being updated
                     if (!shouldUpdatePrevious && ShouldUpdate)
@@ -37,18 +37,17 @@ namespace ShooterGame
         }
 
         /// <summary>
-        /// Get or set the active-status of this controller.
+        /// Get or set the enabled status of this collision component.
         /// </summary>
-        public bool ControllerActive
+        public bool Enabled
         {
-            get => _controllerActive;
+            get => _enabled;
             set
             {
-                if (_controllerActive != value)
+                if (_enabled != value)
                 {
-                    _controllerActive = value;
-                    if (_controllerActive)
-                        UpdateController.Add(this);
+                    _enabled = value;
+                    if (_enabled) UpdateController.Add(this);
                 }
             }
         }
@@ -56,7 +55,7 @@ namespace ShooterGame
         /// <summary>
         /// Check if this class should continue to be updated.
         /// </summary>
-        public bool ShouldUpdate { get { return _controllerActive && (Parent != null); } }
+        public bool ShouldUpdate { get { return _enabled && (Entity != null); } }
 
         /// <summary>
         /// Runs whatever updates the controller needs to perform every game tick.
@@ -68,7 +67,7 @@ namespace ShooterGame
         /// </summary>
         public void Destroy()
         {
-            ControllerActive = false;
+            Enabled = false;
         }
     }
 }

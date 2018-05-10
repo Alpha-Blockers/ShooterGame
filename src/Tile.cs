@@ -7,7 +7,9 @@ namespace ShooterGame
     /// </summary>
     class Tile
     {
-        private const int TILE_SIZE = 20; // Used within property Width and Height
+        private const int TILE_SIZE = 40; // Used within property Width and Height
+
+        private bool _passable;
 
         /// <summary>
         /// Get tile size in the X-direction.
@@ -24,6 +26,13 @@ namespace ShooterGame
         /// </summary>
         public Tile()
         {
+            _passable = true;
+        }
+
+        public bool Passable
+        {
+            get => _passable;
+            set { _passable = value; }
         }
 
         /// <summary>
@@ -33,7 +42,15 @@ namespace ShooterGame
         /// <param name="y">Y-coordinate where tile is drawn.</param>
         public void Draw(int x, int y)
         {
-            SwinGame.DrawRectangle(Color.LightGray, x, y, Width, Height);
+            if (_passable)
+            {
+                SwinGame.DrawRectangle(Color.LightGray, x, y, Width, Height);
+            }
+            else
+            {
+                SwinGame.FillRectangle(Color.DarkGray, x, y, Width, Height);
+                SwinGame.DrawRectangle(Color.Gray, x, y, Width, Height);
+            }
         }
     }
 }

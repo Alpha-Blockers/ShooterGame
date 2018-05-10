@@ -3,23 +3,23 @@ namespace ShooterGame
 {
     class MovementComponent : IComponent, IUpdate
     {
-        private Entity _parent;
+        private Entity _entity;
         private int _speedX;
         private int _speedY;
         
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
-        public Entity Parent
+        public Entity Entity
         {
-            get => _parent;
+            get => _entity;
             set
             {
-                if (_parent != value)
+                if (_entity != value)
                 {
-                    if (_parent != null) _parent.Movement = null;
-                    _parent = value;
-                    if (_parent != null) _parent.Movement = this;
+                    if (_entity != null) _entity.Movement = null;
+                    _entity = value;
+                    if (_entity != null) _entity.Movement = this;
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace ShooterGame
         /// </summary>
         public void Update()
         {
-            PositionComponent p = Parent?.Position;
+            PositionComponent p = Entity?.Position;
             if (p != null)
             {
                 p.X = p.X + _speedX;

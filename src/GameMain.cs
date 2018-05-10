@@ -1,7 +1,6 @@
 using System;
 using SwinGameSDK;
-using static SwinGameSDK.SwinGame; // requires mcs version 4+,
-// using SwinGameSDK.SwinGame; // requires mcs version 4+,
+using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
@@ -13,7 +12,7 @@ namespace ShooterGame
             OpenGraphicsWindow("GameMain", 800, 600);
 
             // Declare variables
-            Map map = new Map(6, 6);
+            Map map = new Map(4, 3);
             Point2D point = new Point2D();
             TickRateController ticker = new TickRateController(60);
 
@@ -23,9 +22,10 @@ namespace ShooterGame
             Entity player = new Entity
             {
                 Position = new PositionComponent(map, 100, 100),
-                Drawable = new DrawableComponent(Color.Blue, 10),
+                Drawable = new DrawableComponent(Color.Blue, 12),
                 Movement = new MovementComponent(),
-                Controller = new PlayerControllerComponent()
+                Controller = new PlayerControllerComponent(),
+                Collision = new CollisionComponent(12)
             };
 
             // Run the game loop

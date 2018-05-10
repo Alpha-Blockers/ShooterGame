@@ -3,7 +3,7 @@ namespace ShooterGame
 {
     class PositionComponent : IComponent
     {
-        private Entity _parent;
+        private Entity _entity;
         private int _x;
         private int _y;
         private Chunk _chunk;
@@ -11,16 +11,16 @@ namespace ShooterGame
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
-        public Entity Parent
+        public Entity Entity
         {
-            get => _parent;
+            get => _entity;
             set
             {
-                if (_parent != value)
+                if (_entity != value)
                 {
-                    if (_parent != null) _parent.Position = null;
-                    _parent = value;
-                    if (_parent != null) _parent.Position = this;
+                    if (_entity != null) _entity.Position = null;
+                    _entity = value;
+                    if (_entity != null) _entity.Position = this;
                 }
             }
         }
@@ -36,7 +36,7 @@ namespace ShooterGame
             _x = x;
             _y = y;
             _chunk = map.NearestChunk(x, y);
-            _chunk.Positions.Add(this);
+            _chunk.Entities.Add(this);
         }
 
         /// <summary>
@@ -78,14 +78,14 @@ namespace ShooterGame
             if (!_chunk.BoundCheck(X, Y))
             {
                 // Save map on which this position is located
-                Map m = _chunk.Parent;
+                Map m = _chunk.Map;
 
                 // Remove from current chunk
-                _chunk?.Positions.Remove(this);
+                _chunk?.Entities.Remove(this);
 
                 // Add to new chunk
                 _chunk = m.NearestChunk(X, Y);
-                _chunk.Positions.Add(this);
+                _chunk.Entities.Add(this);
             }
         }
 
@@ -105,7 +105,7 @@ namespace ShooterGame
         {
             if (_chunk != null)
             {
-                _chunk.Positions.Remove(this);
+                _chunk.Entities.Remove(this);
                 _chunk = null;
             }
         }
