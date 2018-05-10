@@ -97,5 +97,17 @@ namespace ShooterGame
         {
             return "(" + X + ", " + Y + ")";
         }
+
+        /// <summary>
+        /// Clear all component data and attempt to unlink from any external data.
+        /// </summary>
+        public void Destroy()
+        {
+            if (_chunk != null)
+            {
+                _chunk.Positions.Remove(this);
+                _chunk = null;
+            }
+        }
     }
 }

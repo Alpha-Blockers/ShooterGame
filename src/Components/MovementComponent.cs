@@ -75,5 +75,14 @@ namespace ShooterGame
                 p.Y = p.Y + _speedY;
             }
         }
+
+        /// <summary>
+        /// Clear all component data and attempt to unlink from any external data.
+        /// </summary>
+        public void Destroy()
+        {
+            _speedX = 0;
+            _speedY = 0;
+        }
     }
 }

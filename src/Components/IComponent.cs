@@ -9,5 +9,9 @@ namespace ShooterGame
         /// </summary>
         Entity Parent { get; set; }
 
+        /// <summary>
+        /// Clear all component data and attempt to unlink from any external data.
+        /// </summary>
+        void Destroy();
     }
 }

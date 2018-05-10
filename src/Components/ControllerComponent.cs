@@ -62,5 +62,13 @@ namespace ShooterGame
         /// Runs whatever updates the controller needs to perform every game tick.
         /// </summary>
         public abstract void Update();
+
+        /// <summary>
+        /// Clear all component data and attempt to unlink from any external data.
+        /// </summary>
+        public void Destroy()
+        {
+            ControllerActive = false;
+        }
     }
 }

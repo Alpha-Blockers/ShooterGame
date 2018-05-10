@@ -15,7 +15,7 @@ namespace ShooterGame
 
         private int _index;
         private string _name;
-        private Color _colour;
+        private Color _color;
         private bool _slotUsed;
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace ShooterGame
         /// Access player colour.
         /// </summary>
         /// <remarks>This should only be changed by a network module.</remarks>
-        public Color Colour
+        public Color Color
         {
-            get => _colour;
-            set { _colour = value;}
+            get => _color;
+            set { _color = value;}
         }
         
         /// <summary>
@@ -90,7 +90,7 @@ namespace ShooterGame
                 Player p = new Player();
                 p._index = i;
                 p._name = "Player " + (i + 1);
-                p._colour = SwinGame.RandomRGBColor(255);
+                p._color = SwinGame.RandomRGBColor(255);
                 _players.Add(p);
             }
         }

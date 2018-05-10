@@ -47,6 +47,7 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Components\BulletControllerComponent.cs" />
     <Compile Include="src\Components\ControllerComponent.cs" />
     <Compile Include="src\Components\DrawableComponent.cs" />
     <Compile Include="src\Components\MovementComponent.cs" />

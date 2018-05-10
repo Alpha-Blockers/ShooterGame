@@ -17,16 +17,13 @@ namespace ShooterGame
             Point2D point = new Point2D();
             TickRateController ticker = new TickRateController(60);
 
-            //Player.LocalPlayerName = "TestPlayerName";
+            Player.LocalPlayerName = "TestPlayerName";
 
-            //NetworkServer server = new NetworkServer();
-            //NetworkClient client = new NetworkClient("localhost");
-            
             // Create test entity
             Entity player = new Entity
             {
                 Position = new PositionComponent(map, 100, 100),
-                Drawable = new DrawableComponent(),
+                Drawable = new DrawableComponent(Color.Blue, 10),
                 Movement = new MovementComponent(),
                 Controller = new PlayerControllerComponent()
             };
@@ -41,23 +38,10 @@ namespace ShooterGame
                 // Clear the screen
                 ClearScreen(Color.White);
 
-
-                int y = 50;
-                foreach (ChatPacket c in MessageLog.Messages)
-                {
-                    DrawText("> " + c.ToString(), Color.Black, 30, y);
-                    y += 20;
-                }
-
-
                 // Update game
                 UpdateController.Flush();
                 NetworkController.Current?.Update();
                 
-                //server.Update();
-                //client.Update();
-
-                /*
                 // Set camera before drawing world
                 PositionComponent position = player.Position;
                 if (position != null)
@@ -74,7 +58,15 @@ namespace ShooterGame
                 point.X = 0;
                 point.Y = 0;
                 SetCameraPos(point);
-                */
+
+                // Draw message log
+                int y = 50;
+                foreach (ChatPacket c in MessageLog.Messages)
+                {
+                    DrawText("> " + c.ToString(), (c.Player != null) ? c.Player.Color : Color.Black, 10, y);
+                    y += 20;
+                }
+
                 // Draw interface
                 DrawFramerate(0, 0);
 

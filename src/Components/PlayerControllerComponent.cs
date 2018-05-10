@@ -1,4 +1,5 @@
 ﻿using SwinGameSDK;
+using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
@@ -19,6 +20,24 @@ namespace ShooterGame
         /// </summary>
         public override void Update()
         {
+            // Check for fire command
+            if (KeyDown(KeyCode.SpaceKey))
+            {
+                PositionComponent p = Parent.Position;
+                MovementComponent m = Parent.Movement;
+                if ((p != null) && (m != null))
+                {
+                    new Entity
+                    {
+                        Position = new PositionComponent(p.ParentChunk.Parent, p.X, p.Y),
+                        Drawable = new DrawableComponent(Color.Red, 2),
+                        Movement = new MovementComponent { SpeedX = m.SpeedX * 2, SpeedY = m.SpeedY * 2 },
+                        Controller = new BulletControllerComponent()
+                    };
+                }
+            }
+            
+            // Check for up-movement command
             if (SwinGame.KeyDown(KeyCode.WKey) || SwinGame.KeyDown(KeyCode.UpKey)) {
                 MovementComponent m = Parent.Movement;
                 if (m != null)

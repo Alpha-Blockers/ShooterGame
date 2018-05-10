@@ -34,6 +34,17 @@ namespace ShooterGame
         public bool IsDrawable() { return _drawable != null; }
 
         /// <summary>
+        /// Clear all entity data.
+        /// </summary>
+        public void Destroy()
+        {
+            _position?.Destroy();
+            _movement?.Destroy();
+            _drawable?.Destroy();
+            _controller?.Destroy();
+        }
+
+        /// <summary>
         /// Access position data, if it exists.
         /// </summary>
         public PositionComponent Position
