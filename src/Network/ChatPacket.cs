@@ -48,13 +48,10 @@ namespace ShooterGame
         /// <returns>A string form of this class suitable for network transfer.</returns>
         public string Encode(bool includePlayerIndex)
         {
-            string result;
             if (includePlayerIndex && (_player != null))
-                result = (char)PacketHeader.Message + _player.Index.ToString() + SEPARATOR + _message;
+                return ((char)PacketHeader.Message).ToString() + _player.Index.ToString() + SEPARATOR + _message;
             else
-                result = (char)PacketHeader.Message + SEPARATOR + _message;
-            MessageLog.Add("ChatPacket.Encode result = " + result);
-            return result;
+                return ((char)PacketHeader.Message).ToString() + SEPARATOR + _message;
         }
 
         /// <summary>
@@ -82,8 +79,15 @@ namespace ShooterGame
             }
             else
             {
-                string playerIndex = encodedString.Substring(1, i - 1); // Skip over the header byte with ...Substring(1, ...
-                player = Player.PlayerByIndex(int.Parse(playerIndex));
+                try
+                {
+                    string playerIndex = encodedString.Substring(1, i - 1); // Skip over the header byte with ...Substring(1, ...
+                    player = Player.PlayerByIndex(int.Parse(playerIndex));
+                }
+                catch
+                {
+                    player = null;
+                }
             }
 
             // Generate and return a new ChatPacket
