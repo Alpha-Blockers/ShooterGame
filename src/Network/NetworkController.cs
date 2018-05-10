@@ -5,12 +5,12 @@ namespace ShooterGame
     {
         public const ushort DEFAULT_PORT = 8000;
 
-        private NetworkController _current;
+        private static NetworkController _current;
 
         /// <summary>
         /// Get or set current active network controller.
         /// </summary>
-        public NetworkController Current
+        public static NetworkController Current
         {
             get => _current;
             set
@@ -32,7 +32,7 @@ namespace ShooterGame
         /// Send data via network.
         /// </summary>
         /// <param name="data">Data to be sent.</param>
-        public abstract void Send(IPacket data);
+        public abstract void Send(Packet data);
 
         /// <summary>
         /// Check for new messages and run general updates for the network.

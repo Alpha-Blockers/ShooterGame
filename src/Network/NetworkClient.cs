@@ -22,21 +22,22 @@ namespace ShooterGame
             // Get host address
             //IPAddress serverIP = Dns.GetHostEntry(address).AddressList[0];
             IPAddress serverIP = Dns.GetHostEntry((address.ToLower() == "localhost") ? Dns.GetHostName() : address).AddressList[0];
-            System.Console.WriteLine("serverIP: " + serverIP.ToString());
 
             // Get host end-point (needed for connection)
             IPEndPoint endPoint = new IPEndPoint(serverIP, port);
-            System.Console.WriteLine("endPoint: " + endPoint.ToString());
 
             // Create socket
             Socket socket = new Socket(serverIP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             // Connect to host
             socket.Connect(endPoint);
-            System.Console.WriteLine("Client connected to server at: " + socket.RemoteEndPoint.ToString());
 
             // Create packet transfer buffer
             _transferBuffer = new PacketTransferBuffer(socket);
+
+            // Inform client server of client's name
+            if ((Player.LocalPlayerName != null) && (Player.LocalPlayerName != ""))
+                Send(new PlayerNamePacket(null, Player.LocalPlayerName));
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace ShooterGame
         /// Send data via network.
         /// </summary>
         /// <param name="data">Data to be sent.</param>
-        public override void Send(IPacket data)
+        public override void Send(Packet data)
         {
             _transferBuffer.Enqueue(data.Encode(false));
         }
@@ -61,19 +62,26 @@ namespace ShooterGame
         {
             switch (encodedMessage[0])
             {
-                case (char)PacketHeader.Message:
+                case (char)PacketIdentifier.Message:
                     {
                         ChatPacket temp = ChatPacket.Decode(encodedMessage);
                         MessageLog.Add(temp);
                         break;
                     }
-                case (char)PacketHeader.Name:
+                case (char)PacketIdentifier.PlayerName:
                     {
-                        PlayerNameChange temp = PlayerNameChange.Decode(encodedMessage);
+                        PlayerNamePacket temp = PlayerNamePacket.Decode(encodedMessage);
+                        temp.Apply();
+                        MessageLog.Add(temp.ToString());
+                        break;
+                    }
+                case (char)PacketIdentifier.LocalPlayerIndex:
+                    {
+                        LocalPlayerIndexPacket temp = LocalPlayerIndexPacket.Decode(encodedMessage);
                         temp.Apply();
                         break;
                     }
-                case (char)PacketHeader.Bye:
+                case (char)PacketIdentifier.Bye:
                     {
                         Shutdown();
                         break;

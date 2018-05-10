@@ -2,10 +2,10 @@
 namespace ShooterGame
 {
     /// <summary>
-    /// Network packet headers are single-byte command characters used to signal what type of packet is being sent.
+    /// Network packet identifiers are single-byte command characters used to signal what type of packet is being sent.
     /// The command character may or may not be followed by some other data, depending on the type of command.
     /// </summary>
-    enum PacketHeader
+    enum PacketIdentifier
     {
         /// <summary>
         /// Chat message command-byte. Is followed by a string (the chat message).
@@ -15,7 +15,12 @@ namespace ShooterGame
         /// <summary>
         /// Player name command-byte. Is followed by a string (the player name).
         /// </summary>
-        Name = 'n',
+        PlayerName = 'n',
+
+        /// <summary>
+        /// Local player index command-byte. Is followed by a number (the new index of the local player).
+        /// </summary>
+        LocalPlayerIndex = 'i',
 
         /// <summary>
         /// Bye command-byte. No extra data follows this command, however the connection will be closed after this command.

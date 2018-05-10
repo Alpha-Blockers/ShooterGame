@@ -1,10 +1,8 @@
 ﻿
 namespace ShooterGame
 {
-    class ChatPacket : IPacket
+    class ChatPacket : Packet
     {
-        private const System.Char SEPARATOR = ':';
-
         private Player _player; // Can be null
         private string _message;
         
@@ -38,7 +36,7 @@ namespace ShooterGame
             if (_player != null)
                 return _player.Name + ": " + _message;
             else
-                return ": " + _message;
+                return _message;
         }
 
         /// <summary>
@@ -46,12 +44,12 @@ namespace ShooterGame
         /// </summary>
         /// <param name="includePlayerIndex">The player index will be included if this is true</param>
         /// <returns>A string form of this class suitable for network transfer.</returns>
-        public string Encode(bool includePlayerIndex)
+        public override string Encode(bool includePlayerIndex)
         {
-            if (includePlayerIndex && (_player != null))
-                return ((char)PacketHeader.Message).ToString() + _player.Index.ToString() + SEPARATOR + _message;
-            else
-                return ((char)PacketHeader.Message).ToString() + SEPARATOR + _message;
+            return EncodePacket(
+                PacketIdentifier.Message,
+                includePlayerIndex ? _player : null,
+                _message);
         }
 
         /// <summary>
@@ -62,36 +60,14 @@ namespace ShooterGame
         /// <returns>A new ChatPacket on success, or a null reference on failure.</returns>
         public static ChatPacket Decode(string encodedString, Player playerOverride = null)
         {
-            Player player;
-
             // Stupidity check
-            if (encodedString[0] != (char)PacketHeader.Message)
-                throw new System.ArgumentException("expected message to begin with '" + (char)PacketHeader.Message + "'");
+            VerifyIdentifier(encodedString, PacketIdentifier.Message);
 
-            // Find separator between header data and message body
-            int i = encodedString.IndexOf(SEPARATOR);
-            if (i < 1) return null;
-
-            // Record player who sent the message
-            if (playerOverride != null)
-            {
-                player = playerOverride;
-            }
-            else
-            {
-                try
-                {
-                    string playerIndex = encodedString.Substring(1, i - 1); // Skip over the header byte with ...Substring(1, ...
-                    player = Player.PlayerByIndex(int.Parse(playerIndex));
-                }
-                catch
-                {
-                    player = null;
-                }
-            }
+            // Split message into components
+            string message = DecodeTail(encodedString, playerOverride, out Player player);
 
             // Generate and return a new ChatPacket
-            return new ChatPacket(player, encodedString.Substring(i + 1));
+            return new ChatPacket(player, message);
         }
     }
 }

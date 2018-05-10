@@ -11,6 +11,7 @@ namespace ShooterGame
     {
         private static List<Player> _players = new List<Player>();
         private static Player _localPlayer;
+        private static string _localPlayerName;
 
         private int _index;
         private string _name;
@@ -26,6 +27,24 @@ namespace ShooterGame
         /// Get the local player (this machine in a network sense).
         /// </summary>
         public static Player LocalPlayer { get => _localPlayer; }
+
+        /// <summary>
+        /// Get or set the local players name.
+        /// </summary>
+        public static string LocalPlayerName
+        {
+            get => _localPlayerName;
+            set
+            {
+                string name = value?.Trim();
+                if ((name != null) && (name != "") && (_localPlayerName != name))
+                {
+                    _localPlayerName = name;
+                    if ((NetworkController.Current != null) && (_localPlayer != null) && (name != ""))
+                        NetworkController.Current.Send(new PlayerNamePacket(_localPlayer, name));
+                }
+            }
+        }
 
         /// <summary>
         /// Access player index (location within the NetworkController player list).
@@ -101,7 +120,7 @@ namespace ShooterGame
         /// <param name="i">Array index if the local player.</param>
         public static void SetLocalPlayerIndex(int i)
         {
-            Player p = PlayerByIndex(i);
+            Player p = GetByIndex(i);
             if ((p != _localPlayer) && (p?._slotUsed == false))
             {
                 if (_localPlayer != null) _localPlayer._slotUsed= false;
@@ -115,7 +134,7 @@ namespace ShooterGame
         /// </summary>
         /// <param name="i">Array index if the player.</param>
         /// <returns>Player at index, or null if out-of-range.</returns>
-        public static Player PlayerByIndex(int i)
+        public static Player GetByIndex(int i)
         {
             if ((0 <= i) && (i < _players.Count))
                 return _players[i];

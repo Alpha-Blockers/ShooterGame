@@ -16,9 +16,12 @@ namespace ShooterGame
             Map map = new Map(6, 6);
             Point2D point = new Point2D();
             TickRateController ticker = new TickRateController(60);
+
+            //Player.LocalPlayerName = "TestPlayerName";
+
             //NetworkServer server = new NetworkServer();
             //NetworkClient client = new NetworkClient("localhost");
-
+            
             // Create test entity
             Entity player = new Entity
             {
@@ -38,18 +41,18 @@ namespace ShooterGame
                 // Clear the screen
                 ClearScreen(Color.White);
 
-                /*
+
                 int y = 50;
                 foreach (ChatPacket c in MessageLog.Messages)
                 {
                     DrawText("> " + c.ToString(), Color.Black, 30, y);
                     y += 20;
                 }
-                */
 
 
                 // Update game
                 UpdateController.Flush();
+                NetworkController.Current?.Update();
                 
                 //server.Update();
                 //client.Update();

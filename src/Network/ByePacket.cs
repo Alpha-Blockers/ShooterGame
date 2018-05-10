@@ -1,9 +1,8 @@
 ﻿
 namespace ShooterGame
 {
-    class ByePacket : IPacket
+    class ByePacket : Packet
     {
-
         /// <summary>
         /// Generate a generic string output from this ByePacket.
         /// </summary>
@@ -18,9 +17,9 @@ namespace ShooterGame
         /// </summary>
         /// <param name="includePlayerIndex">The player index will be included if this is true</param>
         /// <returns>A string form of this class suitable for network transfer.</returns>
-        public string Encode(bool includePlayerIndex)
+        public override string Encode(bool includePlayerIndex)
         {
-            return PacketHeader.Bye.ToString();
+            return EncodeHeader(PacketIdentifier.Bye);
         }
 
         /// <summary>
@@ -32,8 +31,7 @@ namespace ShooterGame
         public static ByePacket Decode(string encodedString, Player playerOverride = null)
         {
             // Stupidity check
-            if (encodedString[0] != (char)PacketHeader.Bye)
-                throw new System.ArgumentException("expected message to begin with '" + (char)PacketHeader.Bye + "'");
+            VerifyIdentifier(encodedString, PacketIdentifier.Bye);
 
             // Generate and return a new ByePacket
             return new ByePacket();

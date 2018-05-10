@@ -1,10 +1,8 @@
 ﻿
 namespace ShooterGame
 {
-    class PlayerNameChange : IPacket
+    class PlayerNamePacket : Packet
     {
-        private const System.Char SEPARATOR = ':';
-
         private Player _player;
         private string _name;
 
@@ -13,7 +11,7 @@ namespace ShooterGame
         /// </summary>
         /// <param name="player">The player who changed their name.</param>
         /// <param name="name">The new name of the player.</param>
-        public PlayerNameChange(Player player, string name)
+        public PlayerNamePacket(Player player, string name)
         {
             _player = player;
             _name = name;
@@ -35,7 +33,7 @@ namespace ShooterGame
         /// <returns>PlayerNameChange in generic string form.</returns>
         public override string ToString()
         {
-            return "Player '" + _player.Name + "' is changing their name to '" + _name + "'";
+            return "'" + _player.Name + "' changed their name to '" + _name + "'";
         }
 
         /// <summary>
@@ -51,12 +49,12 @@ namespace ShooterGame
         /// </summary>
         /// <param name="includePlayerIndex">The player index will be included if this is true</param>
         /// <returns>A string form of this class suitable for network transfer.</returns>
-        public string Encode(bool includePlayerIndex)
+        public override string Encode(bool includePlayerIndex)
         {
-            if (includePlayerIndex)
-                return PacketHeader.Name + _player.Index.ToString() + SEPARATOR + _name;
-            else
-                return PacketHeader.Name + SEPARATOR + _name;
+            return EncodePacket(
+                PacketIdentifier.PlayerName,
+                includePlayerIndex ? _player : null,
+                _name);
         }
 
         /// <summary>
@@ -65,32 +63,16 @@ namespace ShooterGame
         /// <param name="encodedString">A string returned by Encode().</param>
         /// <param name="playerOverride">An optional player value used to override whatever value was received.</param>
         /// <returns>A new PlayerNameChange on success, or a null reference on failure.</returns>
-        public static PlayerNameChange Decode(string encodedString, Player playerOverride = null)
+        public static PlayerNamePacket Decode(string encodedString, Player playerOverride = null)
         {
-            Player player;
-
             // Stupidity check
-            if (encodedString[0] != (char)PacketHeader.Name)
-                throw new System.ArgumentException("expected message to begin with '" + (char)PacketHeader.Name + "'");
+            VerifyIdentifier(encodedString, PacketIdentifier.PlayerName);
 
-            // Find separator between header data and message body
-            int i = encodedString.IndexOf(SEPARATOR);
-            if (i < 1) return null;
+            // Split message into components
+            string name = DecodeTail(encodedString, playerOverride, out Player player);
 
-            // Record player who sent the message
-            if (playerOverride != null)
-            {
-                player = playerOverride;
-            }
-            else
-            {
-                string playerIndex = encodedString.Substring(1, i - 1); // Skip over the header byte with ...Substring(1, ...
-                player = Player.PlayerByIndex(int.Parse(playerIndex));
-                if (player == null) return null;
-            }
-
-            // Generate and return a new PlayerNameChange
-            return new PlayerNameChange(player, encodedString.Substring(i + 1));
+            // Generate and return a new ChatPacket
+            return new PlayerNamePacket(player, name);
         }
     }
 }

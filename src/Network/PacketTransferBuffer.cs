@@ -81,7 +81,7 @@ namespace ShooterGame
         /// </summary>
         /// <param name="packet">Packet to be sent via the network.</param>
         /// <param name="includePlayerIndex">The player index will be included if this is true</param>
-        public void Enqueue(IPacket packet, bool includePlayerIndex)
+        public void Enqueue(Packet packet, bool includePlayerIndex)
         {
             Enqueue(packet.Encode(includePlayerIndex));
         }

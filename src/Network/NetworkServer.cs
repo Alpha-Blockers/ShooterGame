@@ -25,7 +25,6 @@ namespace ShooterGame
             {
                 _transferBuffer = new PacketTransferBuffer(socket);
                 _player = Player.AllocatePlayer();
-                System.Console.WriteLine("Client connected from: " + socket.RemoteEndPoint.ToString());
             }
 
             /// <summary>
@@ -66,11 +65,9 @@ namespace ShooterGame
         {
             // Get local address
             IPAddress address = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0];
-            System.Console.WriteLine("listenerIP: " + address.ToString());
 
             // Get local end-point (needed for connection)
             IPEndPoint endPoint = new IPEndPoint(address, port);
-            System.Console.WriteLine("listenerEndPoint: " + endPoint.ToString());
 
             // Create socket
             _listener = new Socket(address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -114,7 +111,7 @@ namespace ShooterGame
         /// Send data to all network clients.
         /// </summary>
         /// <param name="data">Data to be sent.</param>
-        public override void Send(IPacket data)
+        public override void Send(Packet data)
         {
             string temp = data.Encode(true);
             foreach (InternalClient c in _client)
@@ -130,21 +127,26 @@ namespace ShooterGame
         {
             switch (encodedMessage[0])
             {
-                case (char)PacketHeader.Message:
+                case (char)PacketIdentifier.Message:
                     {
                         ChatPacket temp = ChatPacket.Decode(encodedMessage, from.Player);
                         Send(temp);
                         MessageLog.Add(temp);
                         break;
                     }
-                case (char)PacketHeader.Name:
+                case (char)PacketIdentifier.PlayerName:
                     {
-                        PlayerNameChange temp = PlayerNameChange.Decode(encodedMessage, from.Player);
+                        PlayerNamePacket temp = PlayerNamePacket.Decode(encodedMessage, from.Player);
                         Send(temp);
                         temp.Apply();
+                        MessageLog.Add(temp.ToString());
                         break;
                     }
-                case (char)PacketHeader.Bye:
+                case (char)PacketIdentifier.LocalPlayerIndex:
+                    {
+                        break; // Ignore these messages if from clients
+                    }
+                case (char)PacketIdentifier.Bye:
                     {
                         throw new System.NotImplementedException();
                     }
@@ -186,7 +188,7 @@ namespace ShooterGame
                     _client.Add(c);
 
                     // Send welcome messages
-                    c.TransferBuffer.Enqueue(new ChatPacket(null, "Connected. Welcome."), false);
+                    c.TransferBuffer.Enqueue(new LocalPlayerIndexPacket(c.Player.Index), false);
                 }
                 else
                 {
@@ -195,7 +197,6 @@ namespace ShooterGame
                     c.Shutdown();
                 }
             }
-            
         }
 
         /// <summary>
