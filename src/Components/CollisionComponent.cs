@@ -5,7 +5,7 @@ using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
-    class CollisionComponent : IComponent, IUpdate
+    class CollisionComponent : IComponent
     {
         private Entity _entity;
         private int _radius;
@@ -45,7 +45,7 @@ namespace ShooterGame
                 if (_enabled != value)
                 {
                     _enabled = value;
-                    if (_enabled) UpdateController.Add(this);
+                    if (_enabled) Entity?.QueueForUpdate();
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace ShooterGame
             if ((position == null) || (movement == null)) return;
 
             // Get parent chunk
-            Chunk chunk = position.ParentChunk;
+            Chunk chunk = position.Chunk;
             if (chunk == null) return;
 
             // Get parent map
@@ -123,17 +123,17 @@ namespace ShooterGame
                                             {
                                                 // Push entity away from tile in x-direction
                                                 if (midTileX < position.X)
-                                                    movement.SpeedX = 1 + _radius + (Tile.Width / 2) - (position.X - midTileX);
+                                                    movement.X = 1 + _radius + (Tile.Width / 2) - (position.X - midTileX);
                                                 else
-                                                    movement.SpeedX = -1 + (midTileX - position.X) - _radius - (Tile.Width / 2);
+                                                    movement.X = -1 + (midTileX - position.X) - _radius - (Tile.Width / 2);
                                             }
                                             else
                                             {
                                                 // Push entity away from tile in y-direction
                                                 if (midTileY < position.Y)
-                                                    movement.SpeedY = 1 + _radius + (Tile.Height / 2) - (position.Y - midTileY);
+                                                    movement.Y = 1 + _radius + (Tile.Height / 2) - (position.Y - midTileY);
                                                 else
-                                                    movement.SpeedY = -1 + (midTileY - position.Y) - _radius - (Tile.Height / 2);
+                                                    movement.Y = -1 + (midTileY - position.Y) - _radius - (Tile.Height / 2);
                                             }
                                         }
                                     }

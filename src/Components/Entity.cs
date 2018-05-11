@@ -4,11 +4,25 @@ namespace ShooterGame
 {
     class Entity
     {
+        private static List<Entity> _updateList = new List<Entity>();
+        private static List<Entity> _updateListAdd = new List<Entity>();
+        private static List<Entity> _updateListRemove = new List<Entity>();
+
+        private bool _inUpdateList;
         private PositionComponent _position;
         private MovementComponent _movement;
         private DrawableComponent _drawable;
         private ControllerComponent _controller;
         private CollisionComponent _collision;
+
+        /// <summary>
+        /// Entity constructor.
+        /// </summary>
+        public Entity()
+        {
+            _inUpdateList = false;
+            QueueForUpdate();
+        }
 
         /// <summary>
         /// Check for position.
@@ -39,18 +53,6 @@ namespace ShooterGame
         /// </summary>
         /// <returns>True if entity has a collision component.</returns>
         public bool HasCollision() { return _collision != null; }
-
-        /// <summary>
-        /// Clear all entity data.
-        /// </summary>
-        public void Destroy()
-        {
-            _position?.Destroy();
-            _movement?.Destroy();
-            _drawable?.Destroy();
-            _controller?.Destroy();
-            _collision?.Destroy();
-        }
 
         /// <summary>
         /// Access position data, if it exists.
@@ -150,6 +152,85 @@ namespace ShooterGame
             {
                 return _collision;
             }
+        }
+
+        /// <summary>
+        /// Clear all entity data.
+        /// </summary>
+        public void Destroy()
+        {
+            _position?.Destroy();
+            _movement?.Destroy();
+            _drawable?.Destroy();
+            _controller?.Destroy();
+            _collision?.Destroy();
+        }
+
+        /// <summary>
+        /// Check if this entity needs to be updated.
+        /// </summary>
+        public bool ShouldBeUpdated
+        {
+            get
+            {
+                return
+                    (true == _movement?.Active) ||
+                    (true == _controller?.Enabled) ||
+                    (true == _collision?.Enabled);
+            }
+        }
+
+        /// <summary>
+        /// Queue this entity to be added to the update list.
+        /// </summary>
+        public void QueueForUpdate()
+        {
+            if (!_inUpdateList)
+            {
+                _inUpdateList = true;
+                _updateListAdd.Add(this);
+            }
+        }
+
+        /// <summary>
+        /// Update all entities within the update list.
+        /// </summary>
+        public static void UpdateAll()
+        {
+            // Add new entities to the update list
+            // No need to check if already in update list, because QueueForUpdate() guards against it
+            foreach (Entity e in _updateListAdd) _updateList.Add(e);
+            _updateListAdd.Clear();
+
+            // Loop through update list
+            foreach (Entity e in _updateList)
+            {
+                // Check if entity should continue to be updated
+                if (e.ShouldBeUpdated)
+                {
+                    // Update entity
+                    if ((e._controller != null) && e._controller.Enabled) e._controller.Update();
+                    if ((e._collision != null) && e._collision.Enabled) e._collision.Update();
+                    if ((e._movement != null) && e._movement.Active) e._movement.Update();
+                }
+                else if (e._inUpdateList)
+                {
+                    // Mark entity to be removed from update list
+                    // If another entity re-adds this entity to the list it'll get removed and re-added (no problem)
+                    e._inUpdateList = false;
+                    _updateListRemove.Add(e);
+                }
+            }
+
+            // Remove entities which no longer need updating from update list 
+            // No need to check if already being removed from update list
+            // The entity might get removed while it is queued to be re-added, but that is fine
+            foreach (Entity e in _updateListRemove) _updateList.Remove(e);
+            _updateListRemove.Clear();
+
+            // List number of entities in the update list
+            // This is for debug only (can safely be removed)
+            SwinGameSDK.SwinGame.DrawText("Entities in update list: " + _updateList.Count, SwinGameSDK.Color.Black, 0, 20);
         }
     }
 }

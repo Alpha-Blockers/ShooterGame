@@ -1,11 +1,11 @@
 ﻿
 namespace ShooterGame
 {
-    class MovementComponent : IComponent, IUpdate
+    class MovementComponent : IComponent
     {
         private Entity _entity;
-        private int _speedX;
-        private int _speedY;
+        private int _x;
+        private int _y;
         
         /// <summary>
         /// Get or set parent entity.
@@ -27,52 +27,39 @@ namespace ShooterGame
         /// <summary>
         /// Get or set speed in x-direction
         /// </summary>
-        public int SpeedX
+        public int X
         {
-            get => _speedX;
+            get => _x;
             set
             {
-                bool shouldUpdatePrevious = ShouldUpdate;
-                _speedX = value;
-                if (!shouldUpdatePrevious && ShouldUpdate) UpdateController.Add(this);
+                bool previouslyActive = Active;
+                _x = value;
+                if (!previouslyActive && Active) Entity?.QueueForUpdate();
             }
         }
 
         /// <summary>
         /// Get or set speed in y-direction.
         /// </summary>
-        public int SpeedY
+        public int Y
         {
-            get => _speedY;
+            get => _y;
             set
             {
-                bool shouldUpdatePrevious = ShouldUpdate;
-                _speedY = value;
-                if (!shouldUpdatePrevious && ShouldUpdate) UpdateController.Add(this);
+                bool previouslyActive = Active;
+                _y = value;
+                if (!previouslyActive && Active) Entity?.QueueForUpdate();
             }
         }
 
         /// <summary>
-        /// Check if this class should be updated.
+        /// Check if the moveent movement component is currently active.
         /// </summary>
-        public bool ShouldUpdate
+        public bool Active
         {
             get
             {
-                return (_speedX != 0) || (_speedY != 0);
-            }
-        }
-
-        /// <summary>
-        /// Update movement data.
-        /// </summary>
-        public void Update()
-        {
-            PositionComponent p = Entity?.Position;
-            if (p != null)
-            {
-                p.X = p.X + _speedX;
-                p.Y = p.Y + _speedY;
+                return (_x != 0) || (_y != 0);
             }
         }
 
@@ -81,8 +68,24 @@ namespace ShooterGame
         /// </summary>
         public void Destroy()
         {
-            _speedX = 0;
-            _speedY = 0;
+            // Set values such that the Active method returns false
+            _x = 0;
+            _y = 0;
+        }
+
+        /// <summary>
+        /// Update movement data.
+        /// </summary>
+        public void Update()
+        {
+            // Get position component
+            PositionComponent position = Entity?.Position;
+            if (position == null)
+                throw new System.FormatException("Entities with a movement component must also have a position component");
+
+            // Update related position component
+            position.X = position.X + _x;
+            position.Y = position.Y + _y;
         }
     }
 }

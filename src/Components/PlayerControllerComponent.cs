@@ -24,27 +24,27 @@ namespace ShooterGame
         public override void Update()
         {
             // Get required components
-            PositionComponent p = Entity.Position;
-            MovementComponent m = Entity.Movement;
-            if ((p == null) || (m == null))
-            {
-                Enabled = false;
-                return;
-            }
+            PositionComponent position = Entity.Position;
+            MovementComponent movement = Entity.Movement;
+            if ((position == null) || (movement == null))
+                throw new System.FormatException("Entities with a player controller component must also have a position and movement component");
 
-            // Check for fire command
+            // Check shoot cooldown
             if (_shootCooldown > 0)
             {
                 _shootCooldown -= 1;
             }
             else if (KeyDown(KeyCode.SpaceKey))
             {
+                // Update shoot cooldown
                 _shootCooldown = 3;
+
+                // Create new bullet entity
                 new Entity
                 {
-                    Position = new PositionComponent(p.ParentChunk.Map, p.X, p.Y),
+                    Position = new PositionComponent(position.Chunk.Map, position.X, position.Y),
                     Drawable = new DrawableComponent(Color.Red, 2),
-                    Movement = new MovementComponent { SpeedX = m.SpeedX * 2, SpeedY = m.SpeedY * 2 },
+                    Movement = new MovementComponent { X = movement.X * 2, Y = movement.Y * 2 },
                     Controller = new BulletControllerComponent(),
                     Collision = new CollisionComponent(2)
                 };
@@ -64,44 +64,44 @@ namespace ShooterGame
             if (x > 0)
             {
                 // Speed up in positive direction if not already at max speed
-                if (m.SpeedX < MAX_SPEED)
-                    m.SpeedX = m.SpeedX + 1;
+                if (movement.X < MAX_SPEED)
+                    movement.X = movement.X + 1;
             }
             else if (x < 0)
             {
                 // Speed up in negative direction if not already at negative max speed
-                if (m.SpeedX > -MAX_SPEED)
-                    m.SpeedX = m.SpeedX - 1;
+                if (movement.X > -MAX_SPEED)
+                    movement.X = movement.X - 1;
             }
             else
             {
                 // Slow down movement regardless of direction
-                if (m.SpeedX > 0)
-                    m.SpeedX = m.SpeedX - 1;
-                else if (m.SpeedX < 0)
-                    m.SpeedX = m.SpeedX + 1;
+                if (movement.X > 0)
+                    movement.X = movement.X - 1;
+                else if (movement.X < 0)
+                    movement.X = movement.X + 1;
             }
 
             // Update vertical movement
             if (y > 0)
             {
                 // Speed up in positive direction if not already at max speed
-                if (m.SpeedY < MAX_SPEED)
-                    m.SpeedY = m.SpeedY + 1;
+                if (movement.Y < MAX_SPEED)
+                    movement.Y = movement.Y + 1;
             }
             else if (y < 0)
             {
                 // Speed up in negative direction if not already at negative max speed
-                if (m.SpeedY > -MAX_SPEED)
-                    m.SpeedY = m.SpeedY - 1;
+                if (movement.Y > -MAX_SPEED)
+                    movement.Y = movement.Y - 1;
             }
             else
             {
                 // Slow down movement regardless of direction
-                if (m.SpeedY > 0)
-                    m.SpeedY = m.SpeedY - 1;
-                else if (m.SpeedY < 0)
-                    m.SpeedY = m.SpeedY + 1;
+                if (movement.Y > 0)
+                    movement.Y = movement.Y - 1;
+                else if (movement.Y < 0)
+                    movement.Y = movement.Y + 1;
             }
         }
     }

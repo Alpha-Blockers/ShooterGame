@@ -42,7 +42,7 @@ namespace ShooterGame
         /// <summary>
         /// Get chunk which contains this position.
         /// </summary>
-        public Chunk ParentChunk { get => _chunk; }
+        public Chunk Chunk { get => _chunk; }
 
         /// <summary>
         /// Get or set X location of this position.

@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    abstract class ControllerComponent : IComponent, IUpdate
+    abstract class ControllerComponent : IComponent
     {
         private Entity _entity;
         private bool _enabled;
@@ -17,21 +17,8 @@ namespace ShooterGame
             {
                 if (_entity != value)
                 {
-                    // Record the old value of ShouldUpdate
-                    bool shouldUpdatePrevious = ShouldUpdate;
-
-                    // Update the old parent, if any
-                    if (_entity != null) _entity.Controller = null;
-
-                    // Update value
                     _entity = value;
-
-                    // Update the new parent, if any
-                    if (_entity != null) _entity.Controller = this;
-
-                    // Check if class needs to start being updated
-                    if (!shouldUpdatePrevious && ShouldUpdate)
-                        UpdateController.Add(this);
+                    if (_enabled) _entity?.QueueForUpdate();
                 }
             }
         }
@@ -47,15 +34,10 @@ namespace ShooterGame
                 if (_enabled != value)
                 {
                     _enabled = value;
-                    if (_enabled) UpdateController.Add(this);
+                    if (_enabled) Entity?.QueueForUpdate();
                 }
             }
         }
-
-        /// <summary>
-        /// Check if this class should continue to be updated.
-        /// </summary>
-        public bool ShouldUpdate { get { return _enabled && (Entity != null); } }
 
         /// <summary>
         /// Runs whatever updates the controller needs to perform every game tick.
@@ -67,7 +49,7 @@ namespace ShooterGame
         /// </summary>
         public void Destroy()
         {
-            Enabled = false;
+            _enabled = false;
         }
     }
 }

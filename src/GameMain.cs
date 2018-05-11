@@ -39,7 +39,7 @@ namespace ShooterGame
                 ClearScreen(Color.White);
 
                 // Update game
-                UpdateController.Flush();
+                Entity.UpdateAll();
                 NetworkController.Current?.Update();
                 
                 // Set camera before drawing world
