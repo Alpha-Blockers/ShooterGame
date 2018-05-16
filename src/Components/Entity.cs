@@ -14,7 +14,8 @@ namespace ShooterGame
         private DrawableComponent _drawable;
         private ControllerComponent _controller;
         private CollisionComponent _collision;
-
+        private HealthComponet _health;
+        private Attackcontroller _attack;
         /// <summary>
         /// Entity constructor.
         /// </summary>
@@ -53,6 +54,17 @@ namespace ShooterGame
         /// </summary>
         /// <returns>True if entity has a collision component.</returns>
         public bool HasCollision() { return _collision != null; }
+        /// <summary>
+        /// Check for for health data.
+        /// </summary>
+        /// <returns>True if entity has a health component.</returns>
+        public bool HasHealth() { return _health != null; }
+        /// <summary>
+        /// Check for for attack damage data.
+        /// </summary>
+        /// <returns>True if entity has a attack component.</returns>
+        public bool hasAttack() { return _attack != null; }
+
 
         /// <summary>
         /// Access position data, if it exists.
@@ -154,6 +166,45 @@ namespace ShooterGame
             }
         }
 
+        /// <summary>
+        /// Access controller data, if it exists.
+        /// </summary>
+        public HealthComponet Health
+        {
+            set
+            {
+                if (_health != value)
+                {
+                    if (_health != null) _health.Entity = null;
+                    _health = value;
+                    if (_health != null) _health.Entity = this;
+                }
+            }
+            get
+            {
+                return _health;
+            }
+        }
+
+        /// <summary>
+        /// Access controller data, if it exists.
+        /// </summary>
+        public Attackcontroller Attack
+        {
+            set
+            {
+                if (_attack != value)
+                {
+                    if (_attack != null) _attack.Entity = null;
+                    _attack = value;
+                    if (_attack != null) _attack.Entity = this;
+                }
+            }
+            get
+            {
+                return _attack;
+            }
+        }
         /// <summary>
         /// Clear all entity data.
         /// </summary>
