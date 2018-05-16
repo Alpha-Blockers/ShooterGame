@@ -48,16 +48,21 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Components\AttackComponent.cs" />
     <Compile Include="src\Components\BulletControllerComponent.cs" />
     <Compile Include="src\Components\CollisionComponent.cs" />
     <Compile Include="src\Components\ControllerComponent.cs" />
     <Compile Include="src\Components\DrawableComponent.cs" />
+    <Compile Include="src\Components\HealthComponent.cs" />
     <Compile Include="src\Components\MovementComponent.cs" />
     <Compile Include="src\Components\Entity.cs" />
     <Compile Include="src\Components\IComponent.cs" />
     <Compile Include="src\Map.cs" />
     <Compile Include="src\Chunk.cs" />
     <Compile Include="src\Components\PlayerControllerComponent.cs" />
+    <Compile Include="src\Menus\Button.cs" />
+    <Compile Include="src\Menus\MainMenu.cs" />
+    <Compile Include="src\Menus\Menu.cs" />
     <Compile Include="src\Network\ByePacket.cs" />
     <Compile Include="src\Network\ChatPacket.cs" />
     <Compile Include="src\Network\Packet.cs" />

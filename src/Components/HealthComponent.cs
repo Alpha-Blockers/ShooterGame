@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ShooterGame
 {
-    class HealthComponet : IComponent
+    class HealthComponent : IComponent
     {
         private int _health;
         private Entity _entity;
@@ -36,12 +36,11 @@ namespace ShooterGame
             set { _health = value; }
         }
 
-
         /// <summary>
         /// Health component cunstructer
         /// </summary>
         /// <param name="health">initial health value(optional)</param>
-        public HealthComponet(int health = 100)
+        public HealthComponent(int health = 100)
         {
             _health = health;
         }

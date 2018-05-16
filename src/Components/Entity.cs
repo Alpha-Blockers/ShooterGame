@@ -14,8 +14,9 @@ namespace ShooterGame
         private DrawableComponent _drawable;
         private ControllerComponent _controller;
         private CollisionComponent _collision;
-        private HealthComponet _health;
-        private Attackcontroller _attack;
+        private HealthComponent _health;
+        private AttackComponent _attack;
+
         /// <summary>
         /// Entity constructor.
         /// </summary>
@@ -50,21 +51,22 @@ namespace ShooterGame
         public bool IsDrawable() { return _drawable != null; }
 
         /// <summary>
-        /// Check for for collision data.
+        /// Check for collision data.
         /// </summary>
         /// <returns>True if entity has a collision component.</returns>
         public bool HasCollision() { return _collision != null; }
+
         /// <summary>
-        /// Check for for health data.
+        /// Check for health data.
         /// </summary>
         /// <returns>True if entity has a health component.</returns>
         public bool HasHealth() { return _health != null; }
+
         /// <summary>
-        /// Check for for attack damage data.
+        /// Check for attack damage data.
         /// </summary>
         /// <returns>True if entity has a attack component.</returns>
-        public bool hasAttack() { return _attack != null; }
-
+        public bool CanAttack() { return _attack != null; }
 
         /// <summary>
         /// Access position data, if it exists.
@@ -167,9 +169,9 @@ namespace ShooterGame
         }
 
         /// <summary>
-        /// Access controller data, if it exists.
+        /// Access health data, if it exists.
         /// </summary>
-        public HealthComponet Health
+        public HealthComponent Health
         {
             set
             {
@@ -187,9 +189,9 @@ namespace ShooterGame
         }
 
         /// <summary>
-        /// Access controller data, if it exists.
+        /// Access attack data, if it exists.
         /// </summary>
-        public Attackcontroller Attack
+        public AttackComponent Attack
         {
             set
             {
@@ -205,6 +207,7 @@ namespace ShooterGame
                 return _attack;
             }
         }
+
         /// <summary>
         /// Clear all entity data.
         /// </summary>

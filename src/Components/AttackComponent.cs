@@ -5,10 +5,19 @@ using System.Text;
 
 namespace ShooterGame
 {
-    class Attackcontroller : IComponent
+    class AttackComponent : IComponent
     {
         private Entity _entity;
         private int _damage;
+
+        /// <summary>
+        /// Attack component constructor
+        /// </summary>
+        /// <param name="damage">Amount of damage the attack does.</param>
+        public AttackComponent(int damage = 10)
+        {
+            _damage = damage;
+        }
 
         /// <summary>
         /// Get or set parent entity.
@@ -26,6 +35,7 @@ namespace ShooterGame
                 }
             }
         }
+
         /// <summary>
         /// get or set damage value
         /// </summary>
@@ -35,12 +45,11 @@ namespace ShooterGame
             set { _damage = value; }
         }
 
-
         /// <summary>
         /// check the health is greater than damage
         /// </summary>
         /// <param name="health">initial healthcomponent</param>
-        public void Attack(HealthComponet health)
+        public void Attack(HealthComponent health)
         {
             if (health.Health > _damage)
 
@@ -56,6 +65,5 @@ namespace ShooterGame
         {
             //empty
         }
-
     }
 }

@@ -38,10 +38,12 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="src\Components\AttackComponent.cs" />
     <Compile Include="src\Components\BulletControllerComponent.cs" />
     <Compile Include="src\Components\CollisionComponent.cs" />
     <Compile Include="src\Components\ControllerComponent.cs" />
     <Compile Include="src\Components\DrawableComponent.cs" />
+    <Compile Include="src\Components\HealthComponent.cs" />
     <Compile Include="src\Components\MovementComponent.cs" />
     <Compile Include="src\Components\Entity.cs" />
     <Compile Include="src\Components\IComponent.cs" />
