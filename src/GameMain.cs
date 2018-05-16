@@ -6,6 +6,20 @@ namespace ShooterGame
 {
     public class GameMain
     {
+        public static bool _shutdown;
+
+        /// <summary>
+        /// Get or set if the program should shutdown.
+        /// </summary>
+        public static bool Shutdown
+        {
+            get => _shutdown;
+            set { _shutdown = value; }
+        }
+
+        /// <summary>
+        /// Game main method.
+        /// </summary>
         public static void Main()
         {
             // Open the game window
@@ -30,16 +44,18 @@ namespace ShooterGame
 
             // Run the game loop
             ticker.Reset();
-            while ((false == WindowCloseRequested()) && !KeyTyped(KeyCode.EscapeKey))
+            while ((false == WindowCloseRequested()) && !Shutdown)
             {
                 // Fetch the next batch of UI interaction
                 ProcessEvents();
+                if (KeyTyped(KeyCode.EscapeKey)) Shutdown = true;
 
                 // Clear the screen
                 ClearScreen(Color.White);
 
                 // Update game
                 Entity.UpdateAll();
+                Menu.Current?.Update();
                 NetworkController.Current?.Update();
                 
                 // Set camera before drawing world
@@ -68,6 +84,7 @@ namespace ShooterGame
                 }
 
                 // Draw interface
+                Menu.Current?.Draw();
                 DrawFramerate(0, 0);
 
                 // Refresh screen and wait to control the frame rate and tick rate

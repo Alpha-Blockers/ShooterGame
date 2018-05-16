@@ -48,6 +48,9 @@
     <Compile Include="src\Map.cs" />
     <Compile Include="src\Chunk.cs" />
     <Compile Include="src\Components\PlayerControllerComponent.cs" />
+    <Compile Include="src\Menus\Button.cs" />
+    <Compile Include="src\Menus\MainMenu.cs" />
+    <Compile Include="src\Menus\Menu.cs" />
     <Compile Include="src\Network\ByePacket.cs" />
     <Compile Include="src\Network\ChatPacket.cs" />
     <Compile Include="src\Network\Packet.cs" />

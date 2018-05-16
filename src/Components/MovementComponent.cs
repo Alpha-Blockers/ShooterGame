@@ -6,7 +6,7 @@ namespace ShooterGame
         private Entity _entity;
         private int _x;
         private int _y;
-        
+
         /// <summary>
         /// Get or set parent entity.
         /// </summary>
