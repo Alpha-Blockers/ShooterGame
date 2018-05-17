@@ -29,12 +29,15 @@ namespace ShooterGame
             if ((position == null) || (movement == null))
                 throw new System.FormatException("Entities with a player controller component must also have a position and movement component");
 
+            // Check if user input should be enabled
+            bool enableControl = (Textbox.CurrentActive == null);
+
             // Check shoot cooldown
             if (_shootCooldown > 0)
             {
                 _shootCooldown -= 1;
             }
-            else if (KeyDown(KeyCode.SpaceKey))
+            else if (enableControl && KeyDown(KeyCode.SpaceKey))
             {
                 // Update shoot cooldown
                 _shootCooldown = 3;
@@ -66,13 +69,19 @@ namespace ShooterGame
 
             // Check for horizontal movement commands
             int x = 0;
-            if (KeyDown(KeyCode.AKey) || KeyDown(KeyCode.LeftKey)) x -= 1;
-            if (KeyDown(KeyCode.DKey) || KeyDown(KeyCode.RightKey)) x += 1;
+            if (enableControl)
+            {
+                if (KeyDown(KeyCode.AKey) || KeyDown(KeyCode.LeftKey)) x -= 1;
+                if (KeyDown(KeyCode.DKey) || KeyDown(KeyCode.RightKey)) x += 1;
+            }
 
             // Check for vertical movement commands
             int y = 0;
-            if (KeyDown(KeyCode.WKey) || KeyDown(KeyCode.UpKey)) y -= 1;
-            if (KeyDown(KeyCode.SKey) || KeyDown(KeyCode.DownKey)) y += 1;
+            if (enableControl)
+            {
+                if (KeyDown(KeyCode.WKey) || KeyDown(KeyCode.UpKey)) y -= 1;
+                if (KeyDown(KeyCode.SKey) || KeyDown(KeyCode.DownKey)) y += 1;
+            }
 
             // Update horizontal movement
             if (x > 0)

@@ -6,8 +6,10 @@ namespace ShooterGame
 {
     class Textbox
     {
+        private const int TEXT_SIZE = 16;
+
         private static Textbox _currentActive = null;
-        private static Font _font = LoadFont("cour.ttf", 16);
+        private static Font _font = LoadFont("cour.ttf", TEXT_SIZE);
         private static Color[] _backColor = new Color[]
         {
             RGBColor(255, 255, 255), // Normal background colour
@@ -22,6 +24,16 @@ namespace ShooterGame
         private bool _hover; // True if mouse is over this textbox
 
         /// <summary>
+        /// Get font used with textboxes.
+        /// </summary>
+        public static Font Font { get => _font; }
+
+        /// <summary>
+        /// Size value used to load the font.
+        /// </summary>
+        public static int FontSize { get => TEXT_SIZE; }
+
+        /// <summary>
         /// Get the current active textbox, if any
         /// </summary>
         public static Textbox CurrentActive { get => _currentActive; }
@@ -33,9 +45,10 @@ namespace ShooterGame
         /// <param name="y">Top edge of textbox.</param>
         /// <param name="width">Width of textbox.</param>
         /// <param name="height">Height of textbox.</param>
+        /// <param name="maxLength">Maximum number of characters the textbox can accept.</param>
         /// <param name="ghostText">Text to be shown when no text has been entered.</param>
         /// <param name="text">Initial text within the textbox.</param>
-        public Textbox(int x, int y, int width, int height, string ghostText = "", string text = "")
+        public Textbox(int x, int y, int width, int height, int maxLength, string ghostText = "", string text = "")
         {
             _textLocation = new Rectangle();
             _location = new Rectangle
@@ -148,14 +161,14 @@ namespace ShooterGame
             _textLocation.Width = _location.Width - 2;
             _textLocation.Height = _location.Height - 2;
             _textLocation.X = _location.X + 1;
-            _textLocation.Y = _location.Y + 2 + ((_textLocation.Height - _font.TextHeight(_text)) / 2);
+            _textLocation.Y = _location.Y + 1 + ((_textLocation.Height - TEXT_SIZE) / 2);
 
             // Draw text, but only if not selected
             // If selected then SwinGame will draw the text
             if (_currentActive != this)
             {
                 if ((_ghostText != null) && (_ghostText != "") && ((_text == null) || (_text == "")))
-                    DrawText(_ghostText, Color.LightGray, bc, _font, FontAlignment.AlignLeft, _textLocation);
+                    DrawText(_ghostText, Color.Gray, bc, _font, FontAlignment.AlignLeft, _textLocation);
                 else
                     DrawText(_text, Color.Black, bc, _font, FontAlignment.AlignLeft, _textLocation);
             }

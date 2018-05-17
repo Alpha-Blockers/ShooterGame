@@ -5,7 +5,7 @@ namespace ShooterGame
     {
         private Player _player; // Can be null
         private string _message;
-        
+
         /// <summary>
         /// Network chat message constructor
         /// </summary>

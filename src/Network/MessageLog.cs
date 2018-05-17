@@ -20,7 +20,7 @@ namespace ShooterGame
         public static void Add(ChatPacket m)
         {
             // Remove a message if the maximum number of messages has been reached
-            if (_messages.Count > MAX_MESSAGES)
+            if (_messages.Count >= MAX_MESSAGES)
                 _messages.RemoveAt(0);
 
             // Add new message
@@ -35,6 +35,22 @@ namespace ShooterGame
         public static void Add(string s)
         {
             Add(new ChatPacket(null, s));
+        }
+
+        /// <summary>
+        /// Clear all messages from the message log.
+        /// </summary>
+        public static void Clear()
+        {
+            _messages.Clear();
+        }
+
+        /// <summary>
+        /// Get number of messages in the message log.
+        /// </summary>
+        public static int Count
+        {
+            get { return _messages.Count; }
         }
     }
 }

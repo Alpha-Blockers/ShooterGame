@@ -20,7 +20,7 @@ namespace ShooterGame
         private int _xIndex, _yIndex;
         private Tile[,] _tile;
         private List<PositionComponent> _entities;
-        
+
         /// <summary>
         /// Get parent map.
         /// </summary>

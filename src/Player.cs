@@ -74,7 +74,7 @@ namespace ShooterGame
             get => _color;
             set { _color = value;}
         }
-        
+
         /// <summary>
         /// Setup the player list.
         /// </summary>
@@ -83,7 +83,7 @@ namespace ShooterGame
         {
             // Stupidity check
             if (_players.Count > 0) throw new System.ArgumentException("cannot create new player list while one already exists");
-            
+
             // Setup players list
             for (int i=0; i<amount; i++)
             {

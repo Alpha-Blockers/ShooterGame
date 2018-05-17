@@ -51,6 +51,8 @@
     <Compile Include="src\Chunk.cs" />
     <Compile Include="src\Components\PlayerControllerComponent.cs" />
     <Compile Include="src\Menus\Button.cs" />
+    <Compile Include="src\Menus\LobbyMenu.cs" />
+    <Compile Include="src\Menus\JoinMenu.cs" />
     <Compile Include="src\Menus\MainMenu.cs" />
     <Compile Include="src\Menus\Menu.cs" />
     <Compile Include="src\Menus\Textbox.cs" />

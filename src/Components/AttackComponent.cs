@@ -48,10 +48,14 @@ namespace ShooterGame
         public void Attack(HealthComponent health)
         {
             if (health.Health > _damage)
-
+            {
                 health.Health -= _damage;
-            else
-                health.Entity?.Destroy();
+            }
+            else if (health.Entity?.Destroyed == false)
+            {
+                health.Entity.Destroy();
+                GameMain.Score += 1;
+            }
         }
 
         /// <summary>

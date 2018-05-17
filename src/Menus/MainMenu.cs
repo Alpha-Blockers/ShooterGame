@@ -1,22 +1,47 @@
-﻿
+﻿using static SwinGameSDK.SwinGame;
+
 namespace ShooterGame
 {
     public class MainMenu : Menu
     {
-        Button _host = new Button("Host Game", 10, 100, 200, 20);
-        Button _join = new Button("Join Game", 10, 125, 200, 20);
-        Button _exit = new Button("Exit", 10, 150, 200, 20);
-        Textbox _textbox = new Textbox(10, 175, 200, 20, "GhostText", "TempText");
+        private const int WIDTH = 200;
+        private const int HEIGHT = 20;
+
+        private Button _host;
+        private Button _join;
+        private Button _exit;
+
+        public MainMenu()
+        {
+            // Get x-coordinates for buttons
+            int x = (ScreenWidth() - WIDTH) / 2;
+
+            // Create host button
+            int y = 50;
+            _host = new Button("Host Game", x, y, WIDTH, HEIGHT);
+
+            // Create join button
+            y += HEIGHT + 2;
+            _join = new Button("Join Game", x, y, WIDTH, HEIGHT);
+
+            // Create exit button
+            y += HEIGHT + 10;
+            _exit = new Button("Exit", x, y, WIDTH, HEIGHT);
+        }
 
         /// <summary>
         /// Check for user input and run any other updates.
         /// </summary>
         public override void Update()
         {
-            _host.Update();
-            _join.Update();
+            // Check if hosting a game
+            if (_host.Update()) Current = new LobbyMenu();
+
+            // Check if joining a game
+            if (_join.Update()) Current = new JoinMenu();
+
+            // Check if program should close
             if (_exit.Update()) GameMain.Shutdown = true;
-            _textbox.Update();
         }
 
         /// <summary>
@@ -27,7 +52,6 @@ namespace ShooterGame
             _host.Draw();
             _join.Draw();
             _exit.Draw();
-            _textbox.Draw();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace ShooterGame
     public class GameMain
     {
         public static bool _shutdown;
+        public static int _score;
 
         /// <summary>
         /// Get or set if the program should shutdown.
@@ -15,6 +16,15 @@ namespace ShooterGame
         {
             get => _shutdown;
             set { _shutdown = value; }
+        }
+
+        /// <summary>
+        /// Get or set score value.
+        /// </summary>
+        public static int Score
+        {
+            get => _score;
+            set { _score = value; }
         }
 
         /// <summary>
@@ -70,7 +80,7 @@ namespace ShooterGame
                 Entity.UpdateAll();
                 Menu.Current?.Update();
                 NetworkController.Current?.Update();
-                
+
                 // Draw world
                 map.Draw();
 
@@ -89,6 +99,7 @@ namespace ShooterGame
 
                 // Draw interface
                 Menu.Current?.Draw();
+                DrawText("Score: " + Score, Color.Black, 5, ScreenHeight() - 20);
                 DrawFramerate(0, 0);
 
                 // Spawn enemies
