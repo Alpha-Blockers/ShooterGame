@@ -14,7 +14,7 @@ namespace ShooterGame
         /// <summary>
         /// Get the size of a chunk, measured in tiles.
         /// </summary>
-        public const int TILES_PER_CHUNK = 8;
+        public const int TILES_PER_CHUNK = 4;
 
         private Map _map;
         private int _xIndex, _yIndex;

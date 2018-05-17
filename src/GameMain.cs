@@ -32,6 +32,9 @@ namespace ShooterGame
 
             Player.LocalPlayerName = "TestPlayerName";
 
+            int enemySpawnCounter = 0;
+            Random rnd = new Random();
+
             // Create test entity
             Entity player = new Entity
             {
@@ -53,12 +56,8 @@ namespace ShooterGame
                 // Clear the screen
                 ClearScreen(Color.White);
 
-                // Update game
-                Entity.UpdateAll();
-                Menu.Current?.Update();
-                NetworkController.Current?.Update();
-                
                 // Set camera before drawing world
+                // Also set before running update in case update methods use camera position
                 PositionComponent position = player.Position;
                 if (position != null)
                 {
@@ -67,6 +66,11 @@ namespace ShooterGame
                     SetCameraPos(point);
                 }
 
+                // Update game
+                Entity.UpdateAll();
+                Menu.Current?.Update();
+                NetworkController.Current?.Update();
+                
                 // Draw world
                 map.Draw();
 
@@ -86,6 +90,27 @@ namespace ShooterGame
                 // Draw interface
                 Menu.Current?.Draw();
                 DrawFramerate(0, 0);
+
+                // Spawn enemies
+                if (enemySpawnCounter > 0)
+                {
+                    enemySpawnCounter -= 1;
+                } else
+                {
+                    enemySpawnCounter = 60;
+                    int px = (2 * Tile.Width) + (int)(rnd.NextDouble() * (map.Width - (4 * Tile.Width)));
+                    int py = (2 * Tile.Height) + (int)(rnd.NextDouble() * (map.Height - (4 * Tile.Height)));
+                    int mx = (int)(rnd.NextDouble() * 4) - 2;
+                    int my = (int)(rnd.NextDouble() * 4) - 2;
+                    new Entity
+                    {
+                        Position = new PositionComponent(map, px, py),
+                        Movement = new MovementComponent(mx, my),
+                        Drawable = new DrawableComponent(Color.Red, 12),
+                        Collision = new CollisionComponent(8),
+                        Health = new HealthComponent(1)
+                    };
+                }
 
                 // Refresh screen and wait to control the frame rate and tick rate
                 RefreshScreen();

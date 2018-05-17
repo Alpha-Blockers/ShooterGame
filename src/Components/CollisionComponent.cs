@@ -174,17 +174,25 @@ namespace ShooterGame
                 }
             }
         }
-        
+
         public bool OnCollide(Entity e1, Entity e2)
         {
-            //MessageLog.Add("entity " + e1.ToString() + " collided with " + e2.ToString());
+            if (e1.HasHealth && e2.HasAttack)
+            {
+                e2.Attack.Attack(e1.Health);
+            }
+            if (e2.HasHealth && e1.HasAttack)
+            {
+                e1.Attack.Attack(e2.Health);
+            }
             return true;
         }
 
         /// <summary>
         /// Clear all component data and attempt to unlink from any external data.
+        /// This method should only be called by the parent entity.
         /// </summary>
-        public void Destroy()
+        public void InternalDestroy()
         {
             Enabled = false;
         }

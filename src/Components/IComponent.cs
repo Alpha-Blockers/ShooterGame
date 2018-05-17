@@ -11,7 +11,8 @@ namespace ShooterGame
 
         /// <summary>
         /// Clear all component data and attempt to unlink from any external data.
+        /// This method should only be called by the parent entity.
         /// </summary>
-        void Destroy();
+        void InternalDestroy();
     }
 }
