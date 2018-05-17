@@ -1,5 +1,4 @@
 ﻿using SwinGameSDK;
-using System.Collections.Generic;
 using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame

@@ -1,8 +1,5 @@
 ﻿using static System.Math;
 
-using SwinGameSDK;
-using static SwinGameSDK.SwinGame;
-
 namespace ShooterGame
 {
     public class CollisionComponent : IComponent

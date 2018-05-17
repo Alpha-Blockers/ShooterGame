@@ -1,6 +1,4 @@
-﻿using SwinGameSDK;
-using static SwinGameSDK.SwinGame;
-
+﻿
 namespace ShooterGame
 {
     public class BulletControllerComponent : ControllerComponent
