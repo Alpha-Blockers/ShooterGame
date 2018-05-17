@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    abstract class NetworkController
+    public abstract class NetworkController
     {
         public const ushort DEFAULT_PORT = 8000;
 

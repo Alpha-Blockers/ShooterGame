@@ -5,7 +5,7 @@ namespace ShooterGame
     /// <summary>
     /// A tick-rate controller is used to control the tick rate of the game.
     /// </summary>
-    class TickRateController
+    public class TickRateController
     {
         private const uint TICK_REBASE_LIMIT = 2000; // Measured in milliseconds
 

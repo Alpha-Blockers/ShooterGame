@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    interface IComponent
+    public interface IComponent
     {
 
         /// <summary>

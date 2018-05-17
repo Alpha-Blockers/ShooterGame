@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    class Map
+    public class Map
     {
 
         private readonly int _chunksX;

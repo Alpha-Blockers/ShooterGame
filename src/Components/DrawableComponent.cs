@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    class DrawableComponent : IComponent
+    public class DrawableComponent : IComponent
     {
         private Entity _entity;
         private Color _color;

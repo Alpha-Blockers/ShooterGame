@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    abstract class Menu
+    public abstract class Menu
     {
         private static Menu _current = new MainMenu();
         private static Font _font = SwinGame.LoadFontNamed("menu", "cour.ttf", 16);

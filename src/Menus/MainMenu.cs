@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    class MainMenu : Menu
+    public class MainMenu : Menu
     {
         Button _host = new Button("Host Game", 10, 100, 200, 20);
         Button _join = new Button("Join Game", 10, 125, 200, 20);

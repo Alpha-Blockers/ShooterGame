@@ -5,7 +5,7 @@ using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
-    class CollisionComponent : IComponent
+    public class CollisionComponent : IComponent
     {
         private Entity _entity;
         private int _radius;

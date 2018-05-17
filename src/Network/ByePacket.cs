@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    class ByePacket : Packet
+    public class ByePacket : Packet
     {
         /// <summary>
         /// Generate a generic string output from this ByePacket.

@@ -5,7 +5,7 @@ namespace ShooterGame
     /// Network packet identifiers are single-byte command characters used to signal what type of packet is being sent.
     /// The command character may or may not be followed by some other data, depending on the type of command.
     /// </summary>
-    enum PacketIdentifier
+    public enum PacketIdentifier
     {
         /// <summary>
         /// Chat message command-byte. Is followed by a string (the chat message).

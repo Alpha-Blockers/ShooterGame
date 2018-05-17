@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    class MovementComponent : IComponent
+    public class MovementComponent : IComponent
     {
         private Entity _entity;
         private int _x;

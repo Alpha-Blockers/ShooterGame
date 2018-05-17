@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    abstract class ControllerComponent : IComponent
+    public abstract class ControllerComponent : IComponent
     {
         private Entity _entity;
         private bool _enabled;

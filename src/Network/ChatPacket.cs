@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    class ChatPacket : Packet
+    public class ChatPacket : Packet
     {
         private Player _player; // Can be null
         private string _message;

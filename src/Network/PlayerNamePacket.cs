@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    class PlayerNamePacket : Packet
+    public class PlayerNamePacket : Packet
     {
         private Player _player;
         private string _name;

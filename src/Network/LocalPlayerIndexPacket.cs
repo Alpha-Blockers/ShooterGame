@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    class LocalPlayerIndexPacket : Packet
+    public class LocalPlayerIndexPacket : Packet
     {
         private int _index;
 

@@ -8,7 +8,7 @@ namespace ShooterGame
     /// The network controller can be setup as either a host or client.
     /// It contains a list of network players, as well as the local player.
     /// </summary>
-    class NetworkClient : NetworkController
+    public class NetworkClient : NetworkController
     {
         private PacketTransferBuffer _transferBuffer;
 

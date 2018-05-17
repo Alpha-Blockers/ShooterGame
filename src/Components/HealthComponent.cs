@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ShooterGame
 {
-    class HealthComponent : IComponent
+    public class HealthComponent : IComponent
     {
         private int _health;
         private Entity _entity;

@@ -3,7 +3,7 @@ using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
-    class PlayerControllerComponent : ControllerComponent
+    public class PlayerControllerComponent : ControllerComponent
     {
         const int MAX_SPEED = 5;
 

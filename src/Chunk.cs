@@ -9,7 +9,7 @@ namespace ShooterGame
     /// Objects within the map are grouped by chunk to allow for fast collision checking.
     /// Objetcs cannot be larger than a single chunk in size.
     /// </summary>
-    class Chunk
+    public class Chunk
     {
         /// <summary>
         /// Get the size of a chunk, measured in tiles.

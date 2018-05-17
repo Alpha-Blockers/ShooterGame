@@ -4,7 +4,7 @@ using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
-    class Button
+    public class Button
     {
         private static Font _font = LoadFont("cour.ttf", 16);
         private static Color[] _edgeColor = new Color[]

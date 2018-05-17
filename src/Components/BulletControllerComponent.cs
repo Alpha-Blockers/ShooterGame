@@ -3,7 +3,7 @@ using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
 {
-    class BulletControllerComponent : ControllerComponent
+    public class BulletControllerComponent : ControllerComponent
     {
         private int _life;
 

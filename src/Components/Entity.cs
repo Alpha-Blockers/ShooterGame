@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    class Entity
+    public class Entity
     {
         private static List<Entity> _updateList = new List<Entity>();
         private static List<Entity> _updateListAdd = new List<Entity>();

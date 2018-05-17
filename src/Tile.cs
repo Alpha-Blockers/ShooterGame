@@ -5,7 +5,7 @@ namespace ShooterGame
     /// <summary>
     /// Tiles are locations within a Map. They have a size and location, and can contain objects.
     /// </summary>
-    class Tile
+    public class Tile
     {
         private const int TILE_SIZE = 40; // Used within property Width and Height
 

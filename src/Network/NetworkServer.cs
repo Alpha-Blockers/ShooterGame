@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShooterGame
 {
-    class NetworkServer : NetworkController
+    public class NetworkServer : NetworkController
     {
         private List<InternalClient> _client;
         private Socket _listener;

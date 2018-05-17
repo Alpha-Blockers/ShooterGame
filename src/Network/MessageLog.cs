@@ -2,7 +2,7 @@
 
 namespace ShooterGame
 {
-    static class MessageLog
+    public static class MessageLog
     {
         public const int MAX_MESSAGES = 20;
 

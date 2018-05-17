@@ -1,7 +1,7 @@
 ﻿
 namespace ShooterGame
 {
-    abstract class Packet
+    public abstract class Packet
     {
         protected const System.Char SEPARATOR = ':';
 

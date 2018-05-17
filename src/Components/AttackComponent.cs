@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ShooterGame
 {
-    class AttackComponent : IComponent
+    public class AttackComponent : IComponent
     {
         private Entity _entity;
         private int _damage;

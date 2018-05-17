@@ -7,7 +7,7 @@ namespace ShooterGame
     /// The Player class contains player data such as name and colour.
     /// This class also contains static methods for accessing and managing a static player list.
     /// </summary>
-    class Player
+    public class Player
     {
         private static List<Player> _players = new List<Player>();
         private static Player _localPlayer;

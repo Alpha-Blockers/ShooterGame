@@ -8,7 +8,7 @@ namespace ShooterGame
     /// <summary>
     /// A packet transfer buffer manages the sending and receiving of packets send via a network socket.
     /// </summary>
-    class PacketTransferBuffer
+    public class PacketTransferBuffer
     {
         private const int MAX_PACKET_SIZE = 100000;
 
