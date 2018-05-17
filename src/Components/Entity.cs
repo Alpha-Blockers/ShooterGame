@@ -7,8 +7,10 @@ namespace ShooterGame
         private static List<Entity> _updateList = new List<Entity>();
         private static List<Entity> _updateListAdd = new List<Entity>();
         private static List<Entity> _updateListRemove = new List<Entity>();
+        private static List<Entity> _destroyList = new List<Entity>();
 
         private bool _inUpdateList;
+        private bool _destroyed;
         private PositionComponent _position;
         private MovementComponent _movement;
         private DrawableComponent _drawable;
@@ -27,46 +29,44 @@ namespace ShooterGame
         }
 
         /// <summary>
-        /// Check for position.
+        /// Check if this entity has been destroyed.
         /// </summary>
-        /// <returns>True if entity has a position component.</returns>
-        public bool HasPosition() { return _position != null; }
+        public bool Destroyed { get => _destroyed; }
 
         /// <summary>
-        /// Check for movement.
+        /// Check if entity has position data.
         /// </summary>
-        /// <returns>True if entity has a movement component.</returns>
-        public bool HasMovement() { return _movement != null; }
+        public bool HasPosition { get { return _position != null; } }
 
         /// <summary>
-        /// Check for controller.
+        /// Check if entity has movement data.
         /// </summary>
-        /// <returns>True if entity has a controller component.</returns>
-        public bool HasController() { return _controller != null; }
+        public bool HasMovement { get { return _movement != null; } }
+
+        /// <summary>
+        /// Check if entity has a controller.
+        /// </summary>
+        public bool HasController { get { return _controller != null; } }
 
         /// <summary>
         /// Check if entity is drawable.
         /// </summary>
-        /// <returns>True if entity has drawable component.</returns>
-        public bool IsDrawable() { return _drawable != null; }
+        public bool IsDrawable { get { return _drawable != null; } }
 
         /// <summary>
-        /// Check for collision data.
+        /// Check if entity has collision data.
         /// </summary>
-        /// <returns>True if entity has a collision component.</returns>
-        public bool HasCollision() { return _collision != null; }
+        public bool HasCollision { get { return _collision != null; } }
 
         /// <summary>
-        /// Check for health data.
+        /// Check if entity has health data.
         /// </summary>
-        /// <returns>True if entity has a health component.</returns>
-        public bool HasHealth() { return _health != null; }
+        public bool HasHealth { get { return _health != null; } }
 
         /// <summary>
-        /// Check for attack damage data.
+        /// Check if entity has attack data.
         /// </summary>
-        /// <returns>True if entity has a attack component.</returns>
-        public bool CanAttack() { return _attack != null; }
+        public bool HasAttack { get { return _attack != null; } }
 
         /// <summary>
         /// Access position data, if it exists.
@@ -209,15 +209,27 @@ namespace ShooterGame
         }
 
         /// <summary>
+        /// Clear all entity data. This method is called from within the update-all method.
+        /// </summary>
+        private void InternalDestroy()
+        {
+            _position?.InternalDestroy();
+            _movement?.InternalDestroy();
+            _drawable?.InternalDestroy();
+            _controller?.InternalDestroy();
+            _collision?.InternalDestroy();
+        }
+
+        /// <summary>
         /// Clear all entity data.
         /// </summary>
         public void Destroy()
         {
-            _position?.Destroy();
-            _movement?.Destroy();
-            _drawable?.Destroy();
-            _controller?.Destroy();
-            _collision?.Destroy();
+            if (!_destroyed)
+            {
+                _destroyed = true;
+                _destroyList.Add(this);
+            }
         }
 
         /// <summary>
@@ -281,6 +293,10 @@ namespace ShooterGame
             // The entity might get removed while it is queued to be re-added, but that is fine
             foreach (Entity e in _updateListRemove) _updateList.Remove(e);
             _updateListRemove.Clear();
+
+            // Loop through destroy-list and call destroy for each entity listed
+            foreach (Entity e in _destroyList) e.InternalDestroy();
+            _destroyList.Clear();
 
             // List number of entities in the update list
             // This is for debug only (can safely be removed)

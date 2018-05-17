@@ -39,15 +39,29 @@ namespace ShooterGame
                 // Update shoot cooldown
                 _shootCooldown = 3;
 
-                // Create new bullet entity
-                new Entity
+                // Get offset of mouse from current position
+                float offsetX = MouseX() - position.X + CameraX();
+                float offsetY = MouseY() - position.Y + CameraY();
+                double offsetMultiplier = 8.0 / System.Math.Sqrt((offsetX * offsetX) + (offsetY * offsetY));
+
+                // Get shoot direction
+                int shootX = (int)(offsetX * offsetMultiplier) + movement.X;
+                int shootY = (int)(offsetY * offsetMultiplier) + movement.Y;
+
+                // Check if shoot direction is non-zero
+                if ((shootX != 0) || (shootY != 0))
                 {
-                    Position = new PositionComponent(position.Chunk.Map, position.X, position.Y),
-                    Drawable = new DrawableComponent(Color.Red, 2),
-                    Movement = new MovementComponent { X = movement.X * 2, Y = movement.Y * 2 },
-                    Controller = new BulletControllerComponent(),
-                    Collision = new CollisionComponent(2)
-                };
+                    // Create new bullet entity
+                    new Entity
+                    {
+                        Position = new PositionComponent(position.Chunk.Map, position.X, position.Y),
+                        Drawable = new DrawableComponent(Color.Red, 2),
+                        Movement = new MovementComponent { X = shootX, Y = shootY },
+                        Controller = new BulletControllerComponent(),
+                        Collision = new CollisionComponent(2),
+                        Attack = new AttackComponent(1)
+                    };
+                }
             }
 
             // Check for horizontal movement commands

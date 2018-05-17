@@ -53,6 +53,7 @@
     <Compile Include="src\Menus\Button.cs" />
     <Compile Include="src\Menus\MainMenu.cs" />
     <Compile Include="src\Menus\Menu.cs" />
+    <Compile Include="src\Menus\Textbox.cs" />
     <Compile Include="src\Network\ByePacket.cs" />
     <Compile Include="src\Network\ChatPacket.cs" />
     <Compile Include="src\Network\Packet.cs" />

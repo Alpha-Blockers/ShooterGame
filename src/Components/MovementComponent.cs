@@ -53,6 +53,27 @@ namespace ShooterGame
         }
 
         /// <summary>
+        /// Default movement constructor.
+        /// </summary>
+        public MovementComponent()
+        {
+            _x = 0;
+            _y = 0;
+        }
+
+        /// <summary>
+        /// Movement constructor which setups up an initial speed values.
+        /// </summary>
+        /// <param name="x">Initial speed in the x-direction.</param>
+        /// <param name="y">Initial speed in the y-direction.</param>
+        public MovementComponent(int x, int y)
+        {
+            _x = x;
+            _y = y;
+            if (Active) Entity?.QueueForUpdate();
+        }
+
+        /// <summary>
         /// Check if the moveent movement component is currently active.
         /// </summary>
         public bool Active
@@ -65,8 +86,9 @@ namespace ShooterGame
 
         /// <summary>
         /// Clear all component data and attempt to unlink from any external data.
+        /// This method should only be called by the parent entity.
         /// </summary>
-        public void Destroy()
+        public void InternalDestroy()
         {
             // Set values such that the Active method returns false
             _x = 0;
