@@ -56,7 +56,15 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Components\AttackComponentTests.cs" />
+    <Compile Include="src\Components\HealthComponentTests.cs" />
+    <Compile Include="src\Components\MovementComponentTests.cs" />
+    <Compile Include="src\Network\ByePacketTests.cs" />
     <Compile Include="src\Network\ChatPacketTests.cs" />
+    <Compile Include="src\Network\MessageLogTests.cs" />
+    <Compile Include="src\Network\NetworkTests.cs" />
+    <Compile Include="src\Network\PlayerNamePacketTests.cs" />
+    <Compile Include="src\Components\PositionComponentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShooterGameWin.csproj">
