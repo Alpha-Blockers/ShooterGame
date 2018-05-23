@@ -5,22 +5,23 @@ namespace ShooterGame
 {
     public class LobbyMenu : Menu
     {
+        public const int PLAYER_COUNT = 4;
+
         private const int WIDTH = 240;
         private const int HEIGHT = 20;
         private const int PADDING = 10;
 
+        bool _failure;
         Button _back;
         Button _start;
-        Rectangle _tempBox;
 
         /// <summary>
         /// Lobby menu constructor.
         /// </summary>
-        public LobbyMenu()
+        public LobbyMenu(string serverAddress)
         {
-            // Setup player list
-            Player.InitPlayers(8);
-            Player.SetLocalPlayerIndex(0);
+            // Set failure trigger
+            _failure = false;
 
             // Make sure a message log exists
             if (MessageLog.Current == null)
@@ -28,9 +29,8 @@ namespace ShooterGame
 
             // Get coordinates for buttons
             int width = (WIDTH - PADDING) / 2;
-            int height = Player.Count * (HEIGHT + PADDING);
             int x = (ScreenWidth() - WIDTH) / 2;
-            int y = ((ScreenHeight() - height) / 2) + height + PADDING;
+            int y = (ScreenHeight() - HEIGHT) / 2;
 
             // Create back button
             _back = new Button("Back", x, y, width, HEIGHT);
@@ -39,8 +39,39 @@ namespace ShooterGame
             x += width + PADDING;
             _start = new Button("Start", x, y, width, HEIGHT);
 
-            // Create temp box
-            _tempBox = new Rectangle();
+            // Setup network
+            // This will also setup the player list
+            try
+            {
+                if (serverAddress != null)
+                {
+                    System.Console.WriteLine("joining " + serverAddress);
+                    NetworkController.Current = new NetworkClient(serverAddress);
+                    System.Console.WriteLine("joined " + serverAddress);
+                }
+                else
+                {
+                    System.Console.WriteLine("hosting");
+                    NetworkController.Current = new NetworkServer(PLAYER_COUNT);
+                    Player.LocalPlayerName = "Host";
+                }
+                Player.SetLocalPlayerIndex(0);
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine("Lobby error: " + e);
+                _failure = true;
+            }
+        }
+
+        /// <summary>
+        /// Go back to the main menu.
+        /// </summary>
+        private void GoBack()
+        {
+            NetworkController.Current = null;
+            Player.TerminatePlayers();
+            Current = new MainMenu();
         }
 
         /// <summary>
@@ -48,11 +79,14 @@ namespace ShooterGame
         /// </summary>
         public override void Update()
         {
+            // Check for failure
+            if (_failure) GoBack();
+
             // Check if going back to main menu
-            if (_back.Update()) Current = new MainMenu();
+            if (_back.Update()) GoBack();
 
             // Game should start
-            if (_start.Update()) Current = new MainMenu();
+            if (_start.Update()) Current = new InGameMenu();
 
             // Update message log
             MessageLog.Current?.Update();
@@ -69,37 +103,6 @@ namespace ShooterGame
 
             // Draw message box
             MessageLog.Current?.Draw();
-
-            // Setup initial format of temp box
-            _tempBox.X = (ScreenWidth() - WIDTH) / 2;
-            _tempBox.Y = (ScreenHeight() - ((Player.Count + 1) * (HEIGHT + PADDING))) / 2;
-            _tempBox.Width = WIDTH;
-            _tempBox.Height = HEIGHT;
-
-            // Draw player names
-            for (int i = 0; i < Player.Count; i++)
-            {
-                // Draw border
-                DrawRectangle(Color.Gray, _tempBox);
-
-                // Adjust temp box
-                _tempBox.X -= 1;
-                _tempBox.Y -= 1;
-                _tempBox.Width -= 2;
-                _tempBox.Height -= 2;
-
-                // Get player
-                Player p = Player.GetByIndex(i);
-
-                // Draw player name
-                DrawText(p.Name, p.Color, Color.White, Textbox.Font, FontAlignment.AlignCenter, _tempBox);
-
-                // Adjust temp box
-                _tempBox.X += 1;
-                _tempBox.Y += 1 + HEIGHT + PADDING;
-                _tempBox.Width += 2;
-                _tempBox.Height += 2;
-            }
         }
     }
 }

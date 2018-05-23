@@ -81,8 +81,8 @@ namespace ShooterGame
         /// <param name="amount">Amount of players the list should contain.</param>
         public static void InitPlayers(int amount)
         {
-            // Stupidity check
-            if (_players.Count > 0) throw new System.ArgumentException("cannot create new player list while one already exists");
+            // Clear any existing data
+            TerminatePlayers();
 
             // Setup players list
             for (int i=0; i<amount; i++)
@@ -90,7 +90,8 @@ namespace ShooterGame
                 Player p = new Player();
                 p._index = i;
                 p._name = "Player " + (i + 1);
-                p._color = SwinGame.RandomRGBColor(255);
+                Color c = SwinGame.RandomRGBColor(255);
+                p._color = SwinGame.RGBFloatColor(c.R / 512f, c.G / 512f, c.B / 512f);
                 _players.Add(p);
             }
         }

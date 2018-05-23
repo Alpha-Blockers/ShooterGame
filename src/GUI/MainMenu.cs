@@ -35,7 +35,7 @@ namespace ShooterGame
         public override void Update()
         {
             // Check if hosting a game
-            if (_host.Update()) Current = new LobbyMenu();
+            if (_host.Update()) Current = new LobbyMenu(null);
 
             // Check if joining a game
             if (_join.Update()) Current = new JoinMenu();

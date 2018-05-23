@@ -18,6 +18,11 @@ namespace ShooterGame
         PlayerName = 'n',
 
         /// <summary>
+        /// Player count command-byte. Is followed by a number.
+        /// </summary>
+        PlayerCount = 'c',
+
+        /// <summary>
         /// Local player index command-byte. Is followed by a number (the new index of the local player).
         /// </summary>
         LocalPlayerIndex = 'i',

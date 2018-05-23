@@ -17,8 +17,9 @@ namespace ShooterGame
             {
                 if (_current != value)
                 {
-                    _current?.Shutdown();
+                    NetworkController temp = _current;
                     _current = value;
+                    temp?.Shutdown();
                 }
             }
         }

@@ -47,6 +47,7 @@
     <Compile Include="src\Components\MovementComponent.cs" />
     <Compile Include="src\Components\Entity.cs" />
     <Compile Include="src\Components\IComponent.cs" />
+    <Compile Include="src\GUI\InGameMenu.cs" />
     <Compile Include="src\Map.cs" />
     <Compile Include="src\Chunk.cs" />
     <Compile Include="src\Components\PlayerControllerComponent.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="src\Network\PacketTransferBuffer.cs" />
     <Compile Include="src\Network\PacketIdentifier.cs" />
     <Compile Include="src\Network\LocalPlayerIndexPacket.cs" />
+    <Compile Include="src\Network\PlayerCountPacket.cs" />
     <Compile Include="src\Network\PlayerNamePacket.cs" />
     <Compile Include="src\Player.cs" />
     <Compile Include="src\TickRateController.cs" />

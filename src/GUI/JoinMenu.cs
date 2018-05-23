@@ -41,11 +41,7 @@ namespace ShooterGame
             // Check for join attempt
             // Update both the address textbox and the join button
             // Using '|' is the following line is correct (not a typo)
-            if (_address.Update() | _join.Update())
-            {
-                // Attempt to join server
-                throw new System.NotImplementedException();
-            }
+            if (_address.Update() | _join.Update()) Current = new LobbyMenu(_address.Text);
 
             // Check if going back to main menu
             if (_back.Update()) Current = new MainMenu();

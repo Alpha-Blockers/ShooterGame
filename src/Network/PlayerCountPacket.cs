@@ -1,31 +1,23 @@
 ﻿
 namespace ShooterGame
 {
-    public class PlayerNamePacket : Packet
+    public class PlayerCountPacket : Packet
     {
-        private Player _player;
-        private string _name;
+        private int _amount;
 
         /// <summary>
         /// Player name change packet constructor.
         /// </summary>
-        /// <param name="player">The player who changed their name.</param>
-        /// <param name="name">The new name of the player.</param>
-        public PlayerNamePacket(Player player, string name)
+        /// <param name="amount">The number of players in the game.</param>
+        public PlayerCountPacket(int amount)
         {
-            _player = player;
-            _name = name;
+            _amount = amount;
         }
 
         /// <summary>
-        /// Try to get the player who changed their name.
+        /// Get the number of players for the game.
         /// </summary>
-        public Player Player { get => _player; }
-
-        /// <summary>
-        /// New name of the player.
-        /// </summary>
-        public string Name { get => _name; }
+        public int Amount { get => _amount; }
 
         /// <summary>
         /// Generate a generic string output from this PlayerNameChange.
@@ -33,7 +25,7 @@ namespace ShooterGame
         /// <returns>PlayerNameChange in generic string form.</returns>
         public override string ToString()
         {
-            return "'" + _player.Name + "' changed their name to '" + _name + "'";
+            return "Player count changed to " + Amount;
         }
 
         /// <summary>
@@ -41,7 +33,7 @@ namespace ShooterGame
         /// </summary>
         public void Apply()
         {
-            if (_name != null) _player.Name = _name;
+            Player.InitPlayers(Amount);
         }
 
         /// <summary>
@@ -52,9 +44,7 @@ namespace ShooterGame
         public override string Encode(bool includePlayerIndex)
         {
             return EncodePacket(
-                PacketIdentifier.PlayerName,
-                includePlayerIndex ? _player : null,
-                _name);
+                PacketIdentifier.PlayerCount, Amount.ToString());
         }
 
         /// <summary>
@@ -63,16 +53,19 @@ namespace ShooterGame
         /// <param name="encodedString">A string returned by Encode().</param>
         /// <param name="playerOverride">An optional player value used to override whatever value was received.</param>
         /// <returns>A new PlayerNameChange on success, or a null reference on failure.</returns>
-        public static PlayerNamePacket Decode(string encodedString, Player playerOverride = null)
+        public static PlayerCountPacket Decode(string encodedString, Player playerOverride = null)
         {
             // Stupidity check
-            VerifyIdentifier(encodedString, PacketIdentifier.PlayerName);
+            VerifyIdentifier(encodedString, PacketIdentifier.PlayerCount);
 
             // Split message into components
-            string name = DecodeTail(encodedString, playerOverride, out Player player);
+            string tail = DecodeTail(encodedString);
+            int amount = 0;
+            try { amount = int.Parse(tail); } catch { }
+            if (amount < 1) return null;
 
             // Generate and return a new ChatPacket
-            return new PlayerNamePacket(player, name);
+            return new PlayerCountPacket(amount);
         }
     }
 }

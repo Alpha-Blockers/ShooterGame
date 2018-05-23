@@ -6,9 +6,9 @@ namespace ShooterGame
 {
     public class MessageLog
     {
-        private const int MAX_MESSAGES = 10;
+        private const int MAX_MESSAGES = 20;
         private const int MENU_WIDTH = 300;
-        private const int MENU_HEIGHT = 116;
+        private const int MENU_HEIGHT = 200;
         private const int EDGE_PADDING = 5;
 
         public static MessageLog _current = new MessageLog();
@@ -143,10 +143,19 @@ namespace ShooterGame
                     ChatPacket packet = new ChatPacket(Player.LocalPlayer, text);
 
                     // Check if network exists and add packet to correct list
-                    if (NetworkController.Current != null)
-                        NetworkController.Current.Send(packet);
-                    else
+                    if (NetworkController.Current == null)
+                    {
                         Add(packet);
+                    }
+                    else if (NetworkController.Current.IsHost)
+                    {
+                        NetworkController.Current.Send(packet);
+                        Add(packet);
+                    }
+                    else
+                    {
+                        NetworkController.Current.Send(packet);
+                    }
                 }
             }
         }
@@ -177,12 +186,14 @@ namespace ShooterGame
                 // Get chat packet
                 ChatPacket chat = _messages[i];
 
-                // Form string and get colour
-                string text = "> " + chat.ToString();
-                Color color = (chat.Player != null) ? chat.Player.Color : Color.Black;
-
                 // Draw text
-                DrawText(text, color, RGBAColor(0, 0, 0, 0), Textbox.Font, FontAlignment.AlignLeft, _tempBox);
+                DrawText(
+                    chat.ToString(),
+                    (chat.Player != null) ? chat.Player.Color : Color.Black,
+                    RGBAColor(0, 0, 0, 0),
+                    Textbox.Font,
+                    FontAlignment.AlignLeft,
+                    _tempBox);
 
                 // Move line
                 _tempBox.Y -= _tempBox.Height;

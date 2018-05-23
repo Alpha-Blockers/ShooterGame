@@ -54,7 +54,7 @@ namespace ShooterGame
             else if (health.Entity?.Destroyed == false)
             {
                 health.Entity.Destroy();
-                GameMain.Score += 1;
+                InGameMenu.CurrentGame.Score += 1;
             }
         }
 

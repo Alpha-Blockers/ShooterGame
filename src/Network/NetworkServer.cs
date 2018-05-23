@@ -45,19 +45,27 @@ namespace ShooterGame
                 // Check if transfer-buffer exists
                 if (_transferBuffer != null)
                 {
-                    // Queue a bye-message for send
-                    _transferBuffer.Enqueue(new ByePacket(), false);
+                    // Check if transfer-buffer has already been shutdown
+                    if (!_transferBuffer.IsShutdown)
+                    {
+                        // Queue a bye-message for send
+                        _transferBuffer.Enqueue(new ByePacket(), false);
 
-                    // Try to flush any pending send-data
-                    _transferBuffer.TryToSendData();
+                        // Try to flush any pending send-data
+                        _transferBuffer.TryToSendData();
 
-                    // Shutdown transfer buffer
-                    _transferBuffer.Shutdown();
+                        // Shutdown transfer buffer
+                        _transferBuffer.Shutdown();
+                    }
                     _transferBuffer = null;
                 }
 
                 // Null the player linkage
-                _player = null;
+                if (_player != null)
+                {
+                    MessageLog.Current?.Add(_player.Name + " disconnected");
+                    _player = null;
+                }
             }
         }
 
@@ -143,12 +151,14 @@ namespace ShooterGame
                         break;
                     }
                 case (char)PacketIdentifier.LocalPlayerIndex:
+                case (char)PacketIdentifier.PlayerCount:
                     {
                         break; // Ignore these messages if from clients
                     }
                 case (char)PacketIdentifier.Bye:
                     {
-                        throw new System.NotImplementedException();
+                        from.Shutdown();
+                        break;
                     }
             }
         }
@@ -160,10 +170,26 @@ namespace ShooterGame
         {
             // Loop through clients list
             // Run update methods and check for received packets
-            foreach (InternalClient c in _client)
+            for (int i=0; i<_client.Count; i++)
             {
+                // Get client
+                InternalClient c = _client[i];
+                if ((c._transferBuffer == null) || (c._transferBuffer.IsShutdown))
+                {
+                    _client.Remove(c);
+                    i--;
+                    continue;
+                }
+
                 // Run update
                 c.TransferBuffer.Update();
+
+                // Check for closed connection
+                if (c.TransferBuffer.IsShutdown)
+                {
+                    c.Shutdown();
+                    continue;
+                }
 
                 // Check for packets
                 for (string packet = c.TransferBuffer.Dequeue(); packet != null; packet = c.TransferBuffer.Dequeue())
@@ -189,6 +215,9 @@ namespace ShooterGame
 
                     // Send welcome messages
                     c.TransferBuffer.Enqueue(new LocalPlayerIndexPacket(c.Player.Index), false);
+
+                    // Update message log
+                    MessageLog.Current?.Add(c.Player.Name + " joined");
                 }
                 else
                 {
@@ -215,6 +244,16 @@ namespace ShooterGame
                 // Clear the client list
                 _client.Clear();
             }
+
+            // Shutdown listener socket
+            if (_listener != null)
+            {
+                _listener.Close();
+                _listener = null;
+            }
+
+            // Clear current network
+            Current = null;
         }
     }
 }

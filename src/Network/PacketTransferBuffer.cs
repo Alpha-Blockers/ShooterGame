@@ -15,6 +15,7 @@ namespace ShooterGame
         private Socket _socket;
         private Queue<byte[]> _toSend; // Should never be null
         private Queue<byte[]> _received; // Should never be null
+        private bool _isShutdown;
 
         private byte[] _sendBuffer; // Should never be null
         private int _sendOffset;
@@ -33,6 +34,7 @@ namespace ShooterGame
             _socket = socket;
             _toSend = new Queue<byte[]>();
             _received = new Queue<byte[]>();
+            _isShutdown = false;
             _sendBuffer = new byte[MAX_PACKET_SIZE + 1];
             _sendOffset = 0;
             _sendAmount = 0;
@@ -42,12 +44,17 @@ namespace ShooterGame
         }
 
         /// <summary>
+        /// Check if the transfer buffer has been shutdown.
+        /// </summary>
+        public bool IsShutdown { get => _isShutdown; }
+
+        /// <summary>
         /// Close the underlying socket and release all resources.
         /// </summary>
         public void Shutdown()
         {
             // Shutdown and close socket
-            _socket.Shutdown(SocketShutdown.Both);
+            _socket.Shutdown(SocketShutdown.Send);
             _socket.Close();
 
             // Clear other data
@@ -57,6 +64,7 @@ namespace ShooterGame
             _received = null;
             _sendBuffer = null;
             _recvBuffer = null;
+            _isShutdown = true;
         }
 
         /// <summary>
@@ -162,7 +170,22 @@ namespace ShooterGame
                 }
 
                 // Receive data
-                int received = _socket.Receive(_recvBuffer, _recvOffset, spaceAvailable, SocketFlags.None);
+                int received = 0;
+                try
+                {
+                    received = _socket.Receive(_recvBuffer, _recvOffset, spaceAvailable, SocketFlags.None);
+                }
+                catch
+                {
+                    received = 0;
+                }
+
+                // Check if any data was received
+                if (received == 0)
+                {
+                    Shutdown();
+                    break;
+                }
 
                 // Update received data amount
                 _recvAmount += received;

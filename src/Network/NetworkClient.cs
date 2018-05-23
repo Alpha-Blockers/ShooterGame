@@ -74,6 +74,12 @@ namespace ShooterGame
                         MessageLog.Current?.Add(temp.ToString());
                         break;
                     }
+                case (char)PacketIdentifier.PlayerCount:
+                    {
+                        PlayerCountPacket temp = PlayerCountPacket.Decode(encodedMessage);
+                        temp.Apply();
+                        break;
+                    }
                 case (char)PacketIdentifier.LocalPlayerIndex:
                     {
                         LocalPlayerIndexPacket temp = LocalPlayerIndexPacket.Decode(encodedMessage);
@@ -82,6 +88,7 @@ namespace ShooterGame
                     }
                 case (char)PacketIdentifier.Bye:
                     {
+                        Menu.Current = new MainMenu();
                         Shutdown();
                         break;
                     }
@@ -95,6 +102,14 @@ namespace ShooterGame
         {
             // Run update
             _transferBuffer.Update();
+
+            // Check for closed connection
+            if (_transferBuffer.IsShutdown)
+            {
+                Shutdown();
+                Menu.Current = new MainMenu();
+                return;
+            }
 
             // Check for packets
             for (string packet = _transferBuffer.Dequeue(); packet != null; packet = _transferBuffer.Dequeue())
@@ -110,16 +125,23 @@ namespace ShooterGame
             // Check if transfer-buffer exists
             if (_transferBuffer != null)
             {
-                // Queue a bye-message for send
-                _transferBuffer.Enqueue(new ByePacket(), false);
+                // Check if transfer-buffer has already been shutdown
+                if (!_transferBuffer.IsShutdown)
+                {
+                    // Queue a bye-message for send
+                    _transferBuffer.Enqueue(new ByePacket(), false);
 
-                // Try to flush any pending send-data
-                _transferBuffer.TryToSendData();
+                    // Try to flush any pending send-data
+                    _transferBuffer.TryToSendData();
 
-                // Shutdown transfer buffer
-                _transferBuffer.Shutdown();
+                    // Shutdown transfer buffer
+                    _transferBuffer.Shutdown();
+                }
                 _transferBuffer = null;
             }
+
+            // Clear current network
+            Current = null;
         }
     }
 }
