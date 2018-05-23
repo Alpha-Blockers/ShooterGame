@@ -6,8 +6,10 @@ namespace ShooterGame
     {
         private const int WIDTH = 200;
         private const int HEIGHT = 20;
+        private const int PADDING = 10;
 
         Button _back;
+        Button _start;
 
         /// <summary>
         /// Lobby menu constructor.
@@ -20,6 +22,10 @@ namespace ShooterGame
 
             // Create back button
             _back = new Button("Back", x, y, WIDTH, HEIGHT);
+
+            // Create start button
+            x = ScreenWidth() - PADDING - WIDTH;
+            _start = new Button("Start", x, y, WIDTH, HEIGHT);
         }
 
         /// <summary>
@@ -29,6 +35,9 @@ namespace ShooterGame
         {
             // Check if going back to main menu
             if (_back.Update()) Current = new MainMenu();
+
+            // Game should start
+            if (_start.Update()) Current = new MainMenu();
         }
 
         /// <summary>
@@ -37,6 +46,7 @@ namespace ShooterGame
         public override void Draw()
         {
             _back.Draw();
+            _start.Draw();
         }
     }
 }
