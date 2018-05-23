@@ -11,7 +11,10 @@ namespace ShooterGame.Tests
         {
             // Clear any static data which may exist
             Player.TerminatePlayers();
-            MessageLog.Clear();
+            if (MessageLog.Current != null)
+                MessageLog.Current.Clear();
+            else
+                MessageLog.Current = new MessageLog();
 
             // Define variables
             NetworkServer server = new NetworkServer();
@@ -28,7 +31,7 @@ namespace ShooterGame.Tests
             }
 
             // Check for message
-            Assert.AreEqual("test", MessageLog.Messages.Last().Message, "Client message not received");
+            Assert.AreEqual("test", MessageLog.Current.Messages.Last().Message, "Client message not received");
         }
     }
 }

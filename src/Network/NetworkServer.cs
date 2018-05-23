@@ -131,7 +131,7 @@ namespace ShooterGame
                     {
                         ChatPacket temp = ChatPacket.Decode(encodedMessage, from.Player);
                         Send(temp);
-                        MessageLog.Add(temp);
+                        MessageLog.Current?.Add(temp);
                         break;
                     }
                 case (char)PacketIdentifier.PlayerName:
@@ -139,7 +139,7 @@ namespace ShooterGame
                         PlayerNamePacket temp = PlayerNamePacket.Decode(encodedMessage, from.Player);
                         Send(temp);
                         temp.Apply();
-                        MessageLog.Add(temp.ToString());
+                        MessageLog.Current?.Add(temp.ToString());
                         break;
                     }
                 case (char)PacketIdentifier.LocalPlayerIndex:

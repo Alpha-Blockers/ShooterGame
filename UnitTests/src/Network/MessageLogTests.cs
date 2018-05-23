@@ -9,67 +9,70 @@ namespace ShooterGame.Tests
         [TestMethod()]
         public void ClearTest()
         {
+            // Create test log
+            MessageLog log = new MessageLog();
+
             // Add dummy packet
             ChatPacket p = new ChatPacket(null, "message");
-            MessageLog.Add(p);
+            log.Add(p);
 
             // Clear queue
-            MessageLog.Clear();
+            log.Clear();
 
             // Check result
-            Assert.AreEqual(MessageLog.Count, 0, "Message count mismatch");
+            Assert.AreEqual(log.Count, 0, "Message count mismatch");
         }
 
         [TestMethod()]
         public void AddTest()
         {
-            // Clear queue to make sure its empty (static data)
-            MessageLog.Clear();
+            // Create test log
+            MessageLog log = new MessageLog();
 
             // Add dummy packet
             ChatPacket p = new ChatPacket(null, "message");
-            MessageLog.Add(p);
+            log.Add(p);
 
             // Check result
-            Assert.AreEqual(MessageLog.Count, 1, "Message count mismatch");
-            Assert.AreEqual(MessageLog.Messages.Last(), p, "Added message not at end of list");
+            Assert.AreEqual(log.Count, 1, "Message count mismatch");
+            Assert.AreEqual(log.Messages.Last(), p, "Added message not at end of list");
         }
 
         [TestMethod()]
         public void AddLimit()
         {
-            // Clear queue to make sure its empty (static data)
-            MessageLog.Clear();
+            // Create test log
+            MessageLog log = new MessageLog();
 
             // Add lots of dummy packets
             ChatPacket p = new ChatPacket(null, "message");
-            for (int i = 0; i <= (MessageLog.MAX_MESSAGES + 2); i++)
-                MessageLog.Add(p);
+            for (int i = 0; i <= (MessageLog.CountMax + 2); i++)
+                log.Add(p);
 
             // Check result
-            Assert.AreEqual(MessageLog.Count, MessageLog.MAX_MESSAGES, "Message count mismatch");
+            Assert.AreEqual(log.Count, MessageLog.CountMax, "Message count mismatch");
         }
 
         [TestMethod()]
         public void MessageRollover()
         {
-            // Clear queue to make sure its empty (static data)
-            MessageLog.Clear();
+            // Create test log
+            MessageLog log = new MessageLog();
 
             // Add lots of dummy packets
             ChatPacket p = new ChatPacket(null, "message");
-            while (MessageLog.Count < MessageLog.MAX_MESSAGES)
-                MessageLog.Add(p);
+            while (log.Count < MessageLog.CountMax)
+                log.Add(p);
 
             // Add target message
             ChatPacket t = new ChatPacket(null, "target");
-            MessageLog.Add(t);
+            log.Add(t);
 
             // Add another dummy packet
-            MessageLog.Add(p);
+            log.Add(p);
 
             // Check result
-            Assert.AreEqual(MessageLog.Messages[MessageLog.Count - 2], t, "Message count mismatch");
+            Assert.AreEqual(log.Messages[log.Count - 2], t, "Message count mismatch");
         }
     }
 }

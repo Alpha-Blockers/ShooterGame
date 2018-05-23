@@ -64,14 +64,14 @@ namespace ShooterGame
                 case (char)PacketIdentifier.Message:
                     {
                         ChatPacket temp = ChatPacket.Decode(encodedMessage);
-                        MessageLog.Add(temp);
+                        MessageLog.Current?.Add(temp);
                         break;
                     }
                 case (char)PacketIdentifier.PlayerName:
                     {
                         PlayerNamePacket temp = PlayerNamePacket.Decode(encodedMessage);
                         temp.Apply();
-                        MessageLog.Add(temp.ToString());
+                        MessageLog.Current?.Add(temp.ToString());
                         break;
                     }
                 case (char)PacketIdentifier.LocalPlayerIndex:

@@ -89,17 +89,9 @@ namespace ShooterGame
                 point.Y = 0;
                 SetCameraPos(point);
 
-                // Draw message log
-                int y = 50;
-                foreach (ChatPacket c in MessageLog.Messages)
-                {
-                    DrawText("> " + c.ToString(), (c.Player != null) ? c.Player.Color : Color.Black, 10, y);
-                    y += 20;
-                }
-
                 // Draw interface
                 Menu.Current?.Draw();
-                DrawText("Score: " + Score, Color.Black, 5, ScreenHeight() - 20);
+                DrawText("Score: " + Score, Color.Black, 2, 15);
                 DrawFramerate(0, 0);
 
                 // Spawn enemies

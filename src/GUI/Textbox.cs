@@ -1,5 +1,4 @@
 ﻿using SwinGameSDK;
-using System.Collections.Generic;
 using static SwinGameSDK.SwinGame;
 
 namespace ShooterGame
@@ -48,7 +47,7 @@ namespace ShooterGame
         /// <param name="maxLength">Maximum number of characters the textbox can accept.</param>
         /// <param name="ghostText">Text to be shown when no text has been entered.</param>
         /// <param name="text">Initial text within the textbox.</param>
-        public Textbox(int x, int y, int width, int height, int maxLength, string ghostText = "", string text = "")
+        public Textbox(float x, float y, float width, float height, int maxLength, string ghostText = "", string text = "")
         {
             _textLocation = new Rectangle();
             _location = new Rectangle
